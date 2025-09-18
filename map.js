@@ -47,5 +47,25 @@ map.on('load', () => {
                     'circle-opacity': 0.6
                 }
             });
+
+            map.on('click', 'jacarandas-layer', (e) => {
+                const coordinates = e.features[0].geometry.coordinates.slice();
+                const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${coordinates[1]},${coordinates[0]}`;
+
+                new maplibregl.Popup()
+                    .setLngLat(coordinates)
+                    .setHTML(`<a href="${googleMapsUrl}" target="_blank">Navigate to this Jacaranda</a>`)
+                    .addTo(map);
+            });
+
+            // Change the cursor to a pointer when the mouse is over the jacarandas layer.
+            map.on('mouseenter', 'jacarandas-layer', () => {
+                map.getCanvas().style.cursor = 'pointer';
+            });
+
+            // Change it back to a pointer when it leaves.
+            map.on('mouseleave', 'jacarandas-layer', () => {
+                map.getCanvas().style.cursor = '';
+            });
         });
 });
