@@ -1,8 +1,15 @@
+// Show a banner if running on dev.jacarandas.com.au
 if (window.location.hostname.startsWith("dev.")) {
   const banner = document.createElement("div");
   banner.id = "env-banner";
   banner.textContent = "🚧 Development Environment 🚧";
   document.body.prepend(banner);
+
+  // push map down so banner doesn’t overlap
+  const mapDiv = document.getElementById("map");
+  if (mapDiv) {
+    mapDiv.style.top = "40px"; // adjust height for the banner
+  }
 }
 
 const basemaps = [
