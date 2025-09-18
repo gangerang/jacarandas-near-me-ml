@@ -1,4 +1,9 @@
-// map.js
+if (window.location.hostname.startsWith("dev.")) {
+  const banner = document.createElement("div");
+  banner.id = "env-banner";
+  banner.textContent = "🚧 Development Environment 🚧";
+  document.body.prepend(banner);
+}
 
 const basemaps = [
   {
