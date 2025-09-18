@@ -46,6 +46,7 @@ const basemaps = [
 ];
 
 let currentBasemapIndex = 0;
+let jacarandaData = null;
 
 const map = new maplibregl.Map({
     container: 'map',
@@ -63,127 +64,125 @@ map.addControl(new maplibregl.GeolocateControl({
 
 const jacarandaUrl = "https://services1.arcgis.com/cNVyNtjGVZybOQWZ/arcgis/rest/services/Trees/FeatureServer/0/query?returnGeometry=true&where=CommonName='Jacaranda'&outSR=4326&f=json";
 
-const addJacarandaLayers = () => {
+const addLayers = () => {
     if (map.getSource('jacarandas')) {
         map.removeLayer('jacarandas-heat');
         map.removeLayer('jacarandas-point');
         map.removeSource('jacarandas');
     }
+    map.addSource('jacarandas', {
+        type: 'geojson',
+        data: jacarandaData
+    });
 
-    fetch(jacarandaUrl)
-        .then(response => response.json())
-        .then(data => {
-            const geojson = {
-                type: 'FeatureCollection',
-                features: data.features.map(feature => {
-                    return {
-                        type: 'Feature',
-                        geometry: {
-                            type: 'Point',
-                            coordinates: [feature.geometry.x, feature.geometry.y]
-                        },
-                        properties: feature.attributes
-                    };
-                })
-            };
+    map.addLayer({
+        id: 'jacarandas-heat',
+        type: 'heatmap',
+        source: 'jacarandas',
+        maxzoom: 14,
+        paint: {
+            'heatmap-intensity': [
+                'interpolate',
+                ['linear'],
+                ['zoom'],
+                0,
+                1,
+                14,
+                3
+            ],
+            'heatmap-color': [
+                'interpolate',
+                ['linear'],
+                ['heatmap-density'],
+                0,
+                'rgba(236,222,239,0)',
+                0.2,
+                '#d0a9e6',
+                0.4,
+                '#b072d4',
+                0.6,
+                '#903ac2',
+                0.8,
+                '#6c2197'
+            ],
+            'heatmap-radius': [
+                'interpolate',
+                ['linear'],
+                ['zoom'],
+                0,
+                2,
+                14,
+                20
+            ],
+            'heatmap-opacity': [
+                'interpolate',
+                ['linear'],
+                ['zoom'],
+                13,
+                1,
+                14,
+                0
+            ]
+        }
+    });
 
-            map.addSource('jacarandas', {
-                type: 'geojson',
-                data: geojson
-            });
-
-            map.addLayer({
-                id: 'jacarandas-heat',
-                type: 'heatmap',
-                source: 'jacarandas',
-                maxzoom: 14,
-                paint: {
-                    'heatmap-intensity': [
-                        'interpolate',
-                        ['linear'],
-                        ['zoom'],
-                        0,
-                        1,
-                        14,
-                        3
-                    ],
-                    'heatmap-color': [
-                        'interpolate',
-                        ['linear'],
-                        ['heatmap-density'],
-                        0,
-                        'rgba(236,222,239,0)',
-                        0.2,
-                        '#d0a9e6',
-                        0.4,
-                        '#b072d4',
-                        0.6,
-                        '#903ac2',
-                        0.8,
-                        '#6c2197'
-                    ],
-                    'heatmap-radius': [
-                        'interpolate',
-                        ['linear'],
-                        ['zoom'],
-                        0,
-                        2,
-                        14,
-                        20
-                    ],
-                    'heatmap-opacity': [
-                        'interpolate',
-                        ['linear'],
-                        ['zoom'],
-                        13,
-                        1,
-                        14,
-                        0
-                    ]
-                }
-            });
-
-            map.addLayer({
-                id: 'jacarandas-point',
-                type: 'circle',
-                source: 'jacarandas',
-                minzoom: 13,
-                paint: {
-                    'circle-radius': [
-                        'interpolate',
-                        ['linear'],
-                        ['zoom'],
-                        13,
-                        2,
-                        16,
-                        5
-                    ],
-                    'circle-color': '#8A2BE2',
-                    'circle-stroke-color': 'white',
-                    'circle-stroke-width': 1,
-                    'circle-opacity': [
-                        'interpolate',
-                        ['linear'],
-                        ['zoom'],
-                        13,
-                        0,
-                        14,
-                        1
-                    ]
-                }
-            });
-        });
+    map.addLayer({
+        id: 'jacarandas-point',
+        type: 'circle',
+        source: 'jacarandas',
+        minzoom: 13,
+        paint: {
+            'circle-radius': [
+                'interpolate',
+                ['linear'],
+                ['zoom'],
+                13,
+                2,
+                16,
+                5
+            ],
+            'circle-color': '#8A2BE2',
+            'circle-stroke-color': 'white',
+            'circle-stroke-width': 1,
+            'circle-opacity': [
+                'interpolate',
+                ['linear'],
+                ['zoom'],
+                13,
+                0,
+                14,
+                1
+            ]
+        }
+    });
 };
 
 const updateButtonText = () => {
     const nextBasemapIndex = (currentBasemapIndex + 1) % basemaps.length;
-    document.getElementById('next-basemap-name').textContent = basemaps[nextBasemapIndex].name;
+    document.getElementById('basemap-toggle-btn').textContent = basemaps[nextBasemapIndex].name;
 };
 
-map.on('load', () => {
-    addJacarandaLayers();
-    updateButtonText();
-});
+fetch(jacarandaUrl)
+    .then(response => response.json())
+    .then(data => {
+        jacarandaData = {
+            type: 'FeatureCollection',
+            features: data.features.map(feature => {
+                return {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [feature.geometry.x, feature.geometry.y]
+                    },
+                    properties: feature.attributes
+                };
+            })
+        };
+        map.on('load', () => {
+            addLayers();
+            updateButtonText();
+        });
+    });
 
 document.getElementById('basemap-toggle-btn').addEventListener('click', () => {
     currentBasemapIndex = (currentBasemapIndex + 1) % basemaps.length;
@@ -191,7 +190,7 @@ document.getElementById('basemap-toggle-btn').addEventListener('click', () => {
     updateButtonText();
 });
 
-map.on('style.load', addJacarandaLayers);
+map.on('style.load', addLayers);
 
 map.on('click', 'jacarandas-point', (e) => {
     const coordinates = e.features[0].geometry.coordinates.slice();
