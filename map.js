@@ -1,6 +1,55 @@
+const basemaps = [
+    {
+        name: 'Streets',
+        style: {
+            'version': 8,
+            'sources': {
+                'carto-voyager': {
+                    'type': 'raster',
+                    'tiles': [
+                        'https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png'
+                    ],
+                    'tileSize': 256
+                }
+            },
+            'layers': [{
+                'id': 'carto-voyager-layer',
+                'type': 'raster',
+                'source': 'carto-voyager'
+            }]
+        }
+    },
+    {
+        name: 'Dark',
+        style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
+    },
+    {
+        name: 'Satellite',
+        style: {
+            'version': 8,
+            'sources': {
+                'esri-world-imagery': {
+                    'type': 'raster',
+                    'tiles': [
+                        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+                    ],
+                    'tileSize': 256
+                }
+            },
+            'layers': [{
+                'id': 'esri-world-imagery-layer',
+                'type': 'raster',
+                'source': 'esri-world-imagery'
+            }]
+        }
+    }
+];
+
+let currentBasemapIndex = 0;
+
 const map = new maplibregl.Map({
     container: 'map',
-    style: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
+    style: basemaps[currentBasemapIndex].style,
     center: [151.2093, -33.8688],
     zoom: 10
 });
@@ -14,7 +63,13 @@ map.addControl(new maplibregl.GeolocateControl({
 
 const jacarandaUrl = "https://services1.arcgis.com/cNVyNtjGVZybOQWZ/arcgis/rest/services/Trees/FeatureServer/0/query?returnGeometry=true&where=CommonName='Jacaranda'&outSR=4326&f=json";
 
-map.on('load', () => {
+const addJacarandaLayers = () => {
+    if (map.getSource('jacarandas')) {
+        map.removeLayer('jacarandas-heat');
+        map.removeLayer('jacarandas-point');
+        map.removeSource('jacarandas');
+    }
+
     fetch(jacarandaUrl)
         .then(response => response.json())
         .then(data => {
@@ -117,23 +172,41 @@ map.on('load', () => {
                     ]
                 }
             });
-
-            map.on('click', 'jacarandas-point', (e) => {
-                const coordinates = e.features[0].geometry.coordinates.slice();
-                const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${coordinates[1]},${coordinates[0]}`;
-
-                new maplibregl.Popup()
-                    .setLngLat(coordinates)
-                    .setHTML(`<a href="${googleMapsUrl}" target="_blank">Navigate to this Jacaranda</a>`)
-                    .addTo(map);
-            });
-
-            map.on('mouseenter', 'jacarandas-point', () => {
-                map.getCanvas().style.cursor = 'pointer';
-            });
-
-            map.on('mouseleave', 'jacarandas-point', () => {
-                map.getCanvas().style.cursor = '';
-            });
         });
+};
+
+const updateButtonText = () => {
+    const nextBasemapIndex = (currentBasemapIndex + 1) % basemaps.length;
+    document.getElementById('next-basemap-name').textContent = basemaps[nextBasemapIndex].name;
+};
+
+map.on('load', () => {
+    addJacarandaLayers();
+    updateButtonText();
+});
+
+document.getElementById('basemap-toggle-btn').addEventListener('click', () => {
+    currentBasemapIndex = (currentBasemapIndex + 1) % basemaps.length;
+    map.setStyle(basemaps[currentBasemapIndex].style);
+    updateButtonText();
+});
+
+map.on('style.load', addJacarandaLayers);
+
+map.on('click', 'jacarandas-point', (e) => {
+    const coordinates = e.features[0].geometry.coordinates.slice();
+    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${coordinates[1]},${coordinates[0]}`;
+
+    new maplibregl.Popup()
+        .setLngLat(coordinates)
+        .setHTML(`<a href="${googleMapsUrl}" target="_blank">Navigate to this Jacaranda</a>`)
+        .addTo(map);
+});
+
+map.on('mouseenter', 'jacarandas-point', () => {
+    map.getCanvas().style.cursor = 'pointer';
+});
+
+map.on('mouseleave', 'jacarandas-point', () => {
+    map.getCanvas().style.cursor = '';
 });
