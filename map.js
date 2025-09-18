@@ -5,6 +5,13 @@ const map = new maplibregl.Map({
     zoom: 12
 });
 
+map.addControl(new maplibregl.GeolocateControl({
+    positionOptions: {
+        enableHighAccuracy: true
+    },
+    trackUserLocation: true
+}));
+
 const jacarandaUrl = "https://services1.arcgis.com/cNVyNtjGVZybOQWZ/arcgis/rest/services/Trees/FeatureServer/0/query?returnGeometry=true&where=CommonName='Jacaranda'&outSR=4326&f=json";
 
 map.on('load', () => {
