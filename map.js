@@ -82,79 +82,95 @@ map.addControl(
 const jacarandaUrl = './data/jacarandas_city-of-sydney.geojson';
 
 function addLayers() {
-  // Clean up if present (use guards in case of partial state)
-  if (map.getLayer('jacarandas-heat')) map.removeLayer('jacarandas-heat');
-  if (map.getLayer('jacarandas-point')) map.removeLayer('jacarandas-point');
-  if (map.getSource('jacarandas')) map.removeSource('jacarandas');
+  // Check if the jacarandas source already exists
+  if (!map.getSource('jacarandas')) {
+    map.addSource('jacarandas', {
+      type: 'geojson',
+      data: jacarandaUrl
+    });
+  }
 
-  // Add source directly from GeoJSON file
-  map.addSource('jacarandas', {
-    type: 'geojson',
-    data: jacarandaUrl
-  });
+  // Add or update the jacarandas-heat layer
+  if (!map.getLayer('jacarandas-heat')) {
+    map.addLayer({
+      id: 'jacarandas-heat',
+      type: 'heatmap',
+      source: 'jacarandas',
+      maxzoom: 14,
+      paint: {
+        'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 0, 1, 14, 3],
+        'heatmap-color': [
+          'interpolate',
+          ['linear'],
+          ['heatmap-density'],
+          0,
+          'rgba(236,222,239,0)',
+          0.2,
+          '#d0a9e6',
+          0.4,
+          '#b072d4',
+          0.6,
+          '#903ac2',
+          0.8,
+          '#6c2197'
+        ],
+        'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 0, 2, 14, 20],
+        'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 13, 1, 14, 0]
+      }
+    });
+  }
 
-  map.addLayer({
-    id: 'jacarandas-heat',
-    type: 'heatmap',
-    source: 'jacarandas',
-    maxzoom: 14,
-    paint: {
-      'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 0, 1, 14, 3],
-      'heatmap-color': [
-        'interpolate',
-        ['linear'],
-        ['heatmap-density'],
-        0,
-        'rgba(236,222,239,0)',
-        0.2,
-        '#d0a9e6',
-        0.4,
-        '#b072d4',
-        0.6,
-        '#903ac2',
-        0.8,
-        '#6c2197'
-      ],
-      'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 0, 2, 14, 20],
-      'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 13, 1, 14, 0]
-    }
-  });
+  // Add or update the jacarandas-point layer
+  if (!map.getLayer('jacarandas-point')) {
+    map.addLayer({
+      id: 'jacarandas-point',
+      type: 'circle',
+      source: 'jacarandas',
+      minzoom: 13,
+      paint: {
+        'circle-radius': ['interpolate', ['linear'], ['zoom'], 13, 2, 16, 5],
+        'circle-color': '#8A2BE2',
+        'circle-stroke-color': 'white',
+        'circle-stroke-width': 1,
+        'circle-opacity': ['interpolate', ['linear'], ['zoom'], 13, 0, 14, 1]
+      }
+    });
+  }
+}
 
-  map.addLayer({
-    id: 'jacarandas-point',
-    type: 'circle',
-    source: 'jacarandas',
-    minzoom: 13,
-    paint: {
-      'circle-radius': ['interpolate', ['linear'], ['zoom'], 13, 2, 16, 5],
-      'circle-color': '#8A2BE2',
-      'circle-stroke-color': 'white',
-      'circle-stroke-width': 1,
-      'circle-opacity': ['interpolate', ['linear'], ['zoom'], 13, 0, 14, 1]
-    }
+// Function to toggle basemaps
+function toggleBasemap() {
+  // Increment the index and wrap around if necessary
+  currentBasemapIndex = (currentBasemapIndex + 1) % basemaps.length;
+
+  // Set the new basemap style
+  const newStyle = basemaps[currentBasemapIndex].style;
+  map.setStyle(newStyle);
+
+  // Ensure the button text reflects the next basemap
+  const nextBasemapIndex = (currentBasemapIndex + 1) % basemaps.length;
+  document.getElementById('basemap-toggle-btn').textContent = basemaps[nextBasemapIndex].name;
+
+  // Explicitly re-add jacaranda layers after the new style loads
+  map.once('style.load', () => {
+    console.log(`Basemap switched to: ${basemaps[currentBasemapIndex].name}`);
+    addLayers();
   });
 }
 
-function updateButtonText() {
+// Attach the toggle function to the button
+const basemapToggleButton = document.getElementById('basemap-toggle-btn');
+if (basemapToggleButton) {
+  basemapToggleButton.addEventListener('click', toggleBasemap);
+
+  // Initialize the button text on page load
   const nextBasemapIndex = (currentBasemapIndex + 1) % basemaps.length;
-  document.getElementById('basemap-toggle-btn').textContent =
-    basemaps[nextBasemapIndex].name;
+  basemapToggleButton.textContent = basemaps[nextBasemapIndex].name;
 }
 
 // Add layers once the initial style is loaded
 map.on('load', () => {
   addLayers();
-  updateButtonText();
-});
-
-// Cycle basemap styles and re-add jacarandas when the new style is ready
-document.getElementById('basemap-toggle-btn').addEventListener('click', () => {
-  currentBasemapIndex = (currentBasemapIndex + 1) % basemaps.length;
-  map.setStyle(basemaps[currentBasemapIndex].style);
-  updateButtonText();
-
-  // Wait for the new style to finish loading, then add layers
-  map.once('style.load', addLayers);
 });
 
 // Interactions (these listeners persist across style changes)
