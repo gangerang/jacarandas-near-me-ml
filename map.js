@@ -109,6 +109,7 @@ function addLayers() {
   }
 
   // Add or update the jacarandas-heat layer
+  // Consistent colour with no fuzzy edges
   if (!map.getLayer('jacarandas-heat')) {
     map.addLayer({
       id: 'jacarandas-heat',
@@ -116,24 +117,17 @@ function addLayers() {
       source: 'jacarandas',
       maxzoom: 14,
       paint: {
-        'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 0, 1, 14, 3],
+        'heatmap-intensity': 1,
         'heatmap-color': [
           'interpolate',
           ['linear'],
           ['heatmap-density'],
-          0,
-          'rgba(236,222,239,0)',
-          0.2,
-          '#d0a9e6',
-          0.4,
-          '#b072d4',
-          0.6,
-          '#903ac2',
-          0.8,
-          '#6c2197'
+          0, 'rgba(236,222,239,0)',
+          0.1, '#8A2BE2',
+          1, '#8A2BE2'
         ],
-        'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 0, 2, 14, 20],
-        'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 13, 1, 14, 0]
+        'heatmap-radius': 10,  
+        'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 13, 0.7, 14, 0]  // Consistent opacity until fade
       }
     });
   }
