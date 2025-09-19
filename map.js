@@ -36,10 +36,6 @@ const basemaps = [
     }
   },
   {
-    name: 'Dark',
-    style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
-  },
-  {
     name: 'Satellite',
     style: {
       version: 8,
@@ -57,6 +53,28 @@ const basemaps = [
           id: 'esri-world-imagery-layer',
           type: 'raster',
           source: 'esri-world-imagery'
+        }
+      ]
+    }
+  },
+  {
+    name: 'Dark',
+    style: {
+      version: 8,
+      sources: {
+        'carto-dark': {
+          type: 'raster',
+          tiles: [
+            'https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
+          ],
+          tileSize: 256
+        }
+      },
+      layers: [
+        {
+          id: 'carto-voyager-layer',
+          type: 'raster',
+          source: 'carto-dark'
         }
       ]
     }
@@ -138,24 +156,49 @@ function addLayers() {
   }
 }
 
-// Function to toggle basemaps
+// Initialize all basemaps as layers
+function initializeBasemaps() {
+  basemaps.forEach((basemap, index) => {
+
+    const layerId = `basemap-${index}`;
+
+    const sourceKey = Object.keys(basemap.style.sources)[0];
+    if (!sourceKey || !basemap.style.sources[sourceKey].tiles) {
+      console.error(`Invalid source for basemap: ${basemap.name}`);
+      return;
+    }
+
+    map.addSource(layerId, {
+      type: 'raster',
+      tiles: basemap.style.sources[sourceKey].tiles,
+      tileSize: 256
+    });
+
+    map.addLayer({
+      id: layerId,
+      type: 'raster',
+      source: layerId,
+      layout: {},
+      paint: {
+        'raster-opacity': index === currentBasemapIndex ? 1 : 0
+      }
+    });
+  });
+}
+
+// Toggle basemaps by adjusting opacity
 function toggleBasemap() {
-  // Increment the index and wrap around if necessary
+  const currentLayerId = `basemap-${currentBasemapIndex}`;
   currentBasemapIndex = (currentBasemapIndex + 1) % basemaps.length;
+  const nextLayerId = `basemap-${currentBasemapIndex}`;
 
-  // Set the new basemap style
-  const newStyle = basemaps[currentBasemapIndex].style;
-  map.setStyle(newStyle);
+  // Set opacity for the current and next basemap layers
+  map.setPaintProperty(currentLayerId, 'raster-opacity', 0);
+  map.setPaintProperty(nextLayerId, 'raster-opacity', 1);
 
-  // Ensure the button text reflects the next basemap
+  // Update the button text
   const nextBasemapIndex = (currentBasemapIndex + 1) % basemaps.length;
   document.getElementById('basemap-toggle-btn').textContent = basemaps[nextBasemapIndex].name;
-
-  // Explicitly re-add jacaranda layers after the new style loads
-  map.once('style.load', () => {
-    console.log(`Basemap switched to: ${basemaps[currentBasemapIndex].name}`);
-    addLayers();
-  });
 }
 
 // Attach the toggle function to the button
@@ -170,6 +213,7 @@ if (basemapToggleButton) {
 
 // Add layers once the initial style is loaded
 map.on('load', () => {
+  initializeBasemaps();
   addLayers();
 });
 
