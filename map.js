@@ -146,7 +146,13 @@ function addLayers() {
       source: 'jacarandas',
       minzoom: 13,
       paint: {
-        'circle-radius': ['interpolate', ['linear'], ['zoom'], 13, 2, 16, 5],
+        'circle-radius': [
+          'interpolate',
+          ['linear'],
+          ['zoom'],
+          13, ['*', ['coalesce', ['get', 'TreeCanopyNS'], 1], 0.5],  // Base size at zoom 13
+          16, ['*', ['coalesce', ['get', 'TreeCanopyNS'], 1], 1]   // Larger size at zoom 16
+        ],
         'circle-color': '#8A2BE2',
         'circle-stroke-color': 'white',
         'circle-stroke-width': 1,
