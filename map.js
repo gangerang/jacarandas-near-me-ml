@@ -156,7 +156,7 @@ function addLayers() {
         'circle-color': '#8A2BE2',
         'circle-stroke-color': 'white',
         'circle-stroke-width': 1,
-        'circle-opacity': ['interpolate', ['linear'], ['zoom'], 13, 0, 14, 1]
+        'circle-opacity': 0.5
       }
     });
   }
