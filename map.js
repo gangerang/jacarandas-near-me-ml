@@ -90,7 +90,7 @@ const map = new maplibregl.Map({
   container: 'map',
   style: basemaps[currentBasemapIndex].style,
   center: [151.2093, -33.88],
-  zoom: 12.5
+  zoom: 11
 });
 
 // Add geolocation control
