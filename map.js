@@ -23,7 +23,8 @@ const basemaps = [
           tiles: [
             'https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png'
           ],
-          tileSize: 256
+          tileSize: 256,
+          attribution: '© <a href="https://carto.com" target="_blank">CARTO</a>'
         }
       },
       layers: [
@@ -45,7 +46,8 @@ const basemaps = [
           tiles: [
             'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
           ],
-          tileSize: 256
+          tileSize: 256,
+          attribution: '© <a href="https://www.esri.com" target="_blank">Esri</a>'
         }
       },
       layers: [
@@ -67,7 +69,8 @@ const basemaps = [
           tiles: [
             'https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
           ],
-          tileSize: 256
+          tileSize: 256,
+          attribution: '© <a href="https://carto.com" target="_blank">CARTO</a>'
         }
       },
       layers: [
@@ -90,6 +93,7 @@ const map = new maplibregl.Map({
   zoom: 10
 });
 
+// Add geolocation control
 map.addControl(
   new maplibregl.GeolocateControl({
     positionOptions: { enableHighAccuracy: true },
@@ -104,7 +108,8 @@ function addLayers() {
   if (!map.getSource('jacarandas')) {
     map.addSource('jacarandas', {
       type: 'geojson',
-      data: jacarandaUrl
+      data: jacarandaUrl,
+      attribution: 'Jacarandas © <a href="https://data.cityofsydney.nsw.gov.au/datasets/cityofsydney::trees/about" target="_blank">City of Sydney</a> (<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>)'
     });
   }
 
@@ -171,7 +176,8 @@ function initializeBasemaps() {
     map.addSource(layerId, {
       type: 'raster',
       tiles: basemap.style.sources[sourceKey].tiles,
-      tileSize: 256
+      tileSize: 256,
+      attribution: basemap.style.sources[sourceKey].attribution
     });
 
     map.addLayer({
