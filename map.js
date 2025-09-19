@@ -89,8 +89,8 @@ let currentBasemapIndex = 0;
 const map = new maplibregl.Map({
   container: 'map',
   style: basemaps[currentBasemapIndex].style,
-  center: [151.2093, -33.8688],
-  zoom: 10
+  center: [151.2093, -33.88],
+  zoom: 12.5
 });
 
 // Add geolocation control
@@ -109,7 +109,7 @@ function addLayers() {
     map.addSource('jacarandas', {
       type: 'geojson',
       data: jacarandaUrl,
-      attribution: 'Jacarandas © <a href="https://data.cityofsydney.nsw.gov.au/datasets/cityofsydney::trees/about" target="_blank">City of Sydney</a> (<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>)'
+      attribution: '© <a href="https://data.cityofsydney.nsw.gov.au/datasets/cityofsydney::trees/about" target="_blank">City of Sydney</a> (<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>)'
     });
   }
 
