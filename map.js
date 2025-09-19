@@ -64,7 +64,6 @@ const basemaps = [
 ];
 
 let currentBasemapIndex = 0;
-let jacarandaData = null;
 
 const map = new maplibregl.Map({
   container: 'map',
@@ -80,8 +79,7 @@ map.addControl(
   })
 );
 
-const jacarandaUrl =
-  "https://services1.arcgis.com/cNVyNtjGVZybOQWZ/arcgis/rest/services/Trees/FeatureServer/0/query?returnGeometry=true&where=CommonName='Jacaranda'&outSR=4326&f=json";
+const jacarandaUrl = './data/jacarandas_city-of-sydney.geojson';
 
 function addLayers() {
   // Clean up if present (use guards in case of partial state)
@@ -89,11 +87,10 @@ function addLayers() {
   if (map.getLayer('jacarandas-point')) map.removeLayer('jacarandas-point');
   if (map.getSource('jacarandas')) map.removeSource('jacarandas');
 
-  if (!jacarandaData) return;
-
+  // Add source directly from GeoJSON file
   map.addSource('jacarandas', {
     type: 'geojson',
-    data: jacarandaData
+    data: jacarandaUrl
   });
 
   map.addLayer({
@@ -144,27 +141,11 @@ function updateButtonText() {
     basemaps[nextBasemapIndex].name;
 }
 
-// Fetch data, then add layers once the initial style is loaded
-fetch(jacarandaUrl)
-  .then((r) => r.json())
-  .then((data) => {
-    jacarandaData = {
-      type: 'FeatureCollection',
-      features: data.features.map((feature) => ({
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: [feature.geometry.x, feature.geometry.y]
-        },
-        properties: feature.attributes
-      }))
-    };
-
-    map.on('load', () => {
-      addLayers();
-      updateButtonText();
-    });
-  });
+// Add layers once the initial style is loaded
+map.on('load', () => {
+  addLayers();
+  updateButtonText();
+});
 
 // Cycle basemap styles and re-add jacarandas when the new style is ready
 document.getElementById('basemap-toggle-btn').addEventListener('click', () => {
@@ -172,8 +153,8 @@ document.getElementById('basemap-toggle-btn').addEventListener('click', () => {
   map.setStyle(basemaps[currentBasemapIndex].style);
   updateButtonText();
 
-  // Wait for the new style to finish loading all its sources/layers
-  map.once('idle', () => addLayers());
+  // Wait for the new style to finish loading, then add layers
+  map.once('style.load', addLayers);
 });
 
 // Interactions (these listeners persist across style changes)
