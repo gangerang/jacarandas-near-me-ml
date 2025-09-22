@@ -112,43 +112,19 @@ function addLayers() {
     });
   }
 
-  // Add or update the jacarandas-heat layer
-  // Consistent colour with no fuzzy edges
-  if (!map.getLayer('jacarandas-heat')) {
-    map.addLayer({
-      id: 'jacarandas-heat',
-      type: 'heatmap',
-      source: 'jacarandas',
-      maxzoom: 14,
-      paint: {
-        'heatmap-intensity': 1,
-        'heatmap-color': [
-          'interpolate',
-          ['linear'],
-          ['heatmap-density'],
-          0, 'rgba(236,222,239,0)',
-          0.1, '#8A2BE2',
-          1, '#8A2BE2'
-        ],
-        'heatmap-radius': 10,  
-        'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 13, 0.7, 14, 0]  // Consistent opacity until fade
-      }
-    });
-  }
-
   // Add or update the jacarandas-point layer
   if (!map.getLayer('jacarandas-point')) {
     map.addLayer({
       id: 'jacarandas-point',
       type: 'circle',
       source: 'jacarandas',
-      minzoom: 13,
+      minzoom: 8,
       paint: {
         'circle-radius': [
           'interpolate',
           ['linear'],
           ['zoom'],
-          13, 5,  // Base size at zoom 13
+          13, 2,  // Base size at zoom 13
           16, 10   // Larger size at zoom 16
         ],
         'circle-color': '#8A2BE2',
