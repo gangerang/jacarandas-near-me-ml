@@ -101,15 +101,14 @@ map.addControl(
   })
 );
 
-const jacarandaUrl = './data/jacarandas_city-of-sydney.geojson';
+const jacarandaUrl = './data/jacarandas-combined.geojson';
 
 function addLayers() {
   // Check if the jacarandas source already exists
   if (!map.getSource('jacarandas')) {
     map.addSource('jacarandas', {
       type: 'geojson',
-      data: jacarandaUrl,
-      attribution: '© <a href="https://data.cityofsydney.nsw.gov.au/datasets/cityofsydney::trees/about" target="_blank">City of Sydney</a> (<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>)'
+      data: jacarandaUrl
     });
   }
 
@@ -149,8 +148,8 @@ function addLayers() {
           'interpolate',
           ['linear'],
           ['zoom'],
-          13, ['*', ['coalesce', ['get', 'TreeCanopyNS'], 1], 0.5],  // Base size at zoom 13
-          16, ['*', ['coalesce', ['get', 'TreeCanopyNS'], 1], 1]   // Larger size at zoom 16
+          13, 5,  // Base size at zoom 13
+          16, 10   // Larger size at zoom 16
         ],
         'circle-color': '#8A2BE2',
         'circle-stroke-color': 'white',
