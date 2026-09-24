@@ -223,7 +223,8 @@ if (!introSeen && !openedSharedLink) intro.showModal();
 function treeUrl(lngLat) {
   const lat = lngLat.lat.toFixed(6);
   const lng = lngLat.lng.toFixed(6);
-  return `${window.location.origin}${window.location.pathname}?tree=${lat},${lng}#18/${lat}/${lng}`;
+  const zoom = Math.round(map.getZoom() * 100) / 100;
+  return `${window.location.origin}${window.location.pathname}?tree=${lat},${lng}#${zoom}/${lat}/${lng}`;
 }
 
 function showTreePopup(lngLat, area) {
