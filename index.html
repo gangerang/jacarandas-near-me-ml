@@ -5,17 +5,43 @@
     <title>Jacarandas Near Me</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <meta name="google" content="notranslate">
+    <meta name="description" content="A map of more than 21,000 jacaranda trees across inner Sydney. Find the purple blooms near you.">
+    <meta name="theme-color" content="#8A2BE2">
+    <link rel="canonical" href="https://www.jacarandas.com.au/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Jacarandas Near Me">
+    <meta property="og:title" content="Jacarandas Near Me">
+    <meta property="og:description" content="A map of more than 21,000 jacaranda trees across inner Sydney. Find the purple blooms near you.">
+    <meta property="og:url" content="https://www.jacarandas.com.au/">
+    <meta property="og:image" content="https://www.jacarandas.com.au/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Map of Sydney covered in purple dots, one for each jacaranda tree">
+    <meta name="twitter:card" content="summary_large_image">
     <script src='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js'></script>
     <link href='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/pmtiles@4.5.0/dist/pmtiles.js'></script>
     <link href='style.css' rel='stylesheet' />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 100%22><text y=%22.9em%22 font-size=%2290%22>💜</text></svg>">
 </head>
 <body>
 
 <div id='map'></div>
-<div id='basemap-switcher'>
-    <button id='basemap-toggle-btn'><span id='next-basemap-name'></span></button>
-</div>
+
+<dialog id='intro'>
+    <h1>Jacarandas Near Me</h1>
+    <p>Each purple dot is a jacaranda. More than 21,000 of them were spotted in aerial photos of inner Sydney by a machine-learning model, so expect the odd miss or mix-up.</p>
+    <ul>
+        <li>Zoom in to see individual trees. Bigger dots are bigger trees.</li>
+        <li>Tap a tree for directions or to share it.</li>
+        <li>Only the area inside the dashed line has been mapped so far.</li>
+    </ul>
+    <form method='dialog'>
+        <button value='locate' class='primary'>Find jacarandas near me</button>
+        <button value='browse'>Just browse</button>
+    </form>
+</dialog>
+
 <script src='map.js'></script>
 
 </body>

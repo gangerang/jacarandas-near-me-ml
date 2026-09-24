@@ -1,27 +1,89 @@
 body { margin:0; padding:0; }
 #map { position:absolute; top:0; bottom:0; width:100%; }
-#basemap-switcher {
-    position: absolute;
-    bottom: 20px;
-    left: 10px;
-    z-index: 1;
+.maplibregl-ctrl-group button.basemap-toggle-btn {
+    width: auto;
+    padding: 0 8px;
+    font: 600 12px/29px system-ui, sans-serif;
 }
 
-#basemap-toggle-btn {
-    background-color: #3388ff;
-    color: white;
+.maplibregl-ctrl-group button.info-btn {
+    font: italic 700 16px/29px Georgia, serif;
+}
+
+#intro {
+    max-width: min(26rem, calc(100vw - 32px));
     border: none;
-    border-radius: 4px;
-    padding: 5px 10px;
-    font-size: 14px;
-    cursor: pointer;
-    box-shadow: 0 0 0 2px rgba(0,0,0,.1);
-    width: 70px;
-    text-align: center;
+    border-radius: 12px;
+    padding: 20px 22px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.3);
+    font: 15px/1.45 system-ui, sans-serif;
+    color: #222;
 }
 
-#basemap-toggle-btn:hover {
-    background-color: #4c9aff;
+#intro::backdrop {
+    background: rgba(40, 10, 70, .35);
+}
+
+#intro h1 {
+    margin: 0 0 8px;
+    font-size: 22px;
+    color: #6a1fb5;
+}
+
+#intro ul {
+    padding-left: 20px;
+}
+
+#intro form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+#intro button {
+    flex: 1 1 auto;
+    padding: 10px 14px;
+    border: 1px solid #8A2BE2;
+    border-radius: 8px;
+    background: white;
+    color: #6a1fb5;
+    font: 600 15px system-ui, sans-serif;
+    cursor: pointer;
+}
+
+#intro button.primary {
+    background: #8A2BE2;
+    color: white;
+}
+
+.tree-popup {
+    font: 14px system-ui, sans-serif;
+}
+
+.tree-popup p {
+    margin: 0 0 8px;
+}
+
+.tree-popup a,
+.tree-popup button {
+    display: inline-block;
+    margin-right: 6px;
+    padding: 5px 10px;
+    border: 1px solid #8A2BE2;
+    border-radius: 6px;
+    background: white;
+    color: #6a1fb5;
+    font: 600 13px system-ui, sans-serif;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.tree-popup input {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 8px;
+    font-size: 12px;
 }
 
 #env-banner {
