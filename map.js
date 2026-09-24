@@ -12,29 +12,11 @@ if (window.location.hostname.startsWith("dev.")) {
   }
 }
 
+// OpenFreeMap vector styles (https://openfreemap.org); satellite stays on Esri raster tiles
 const basemaps = [
   {
     name: 'Streets',
-    style: {
-      version: 8,
-      sources: {
-        'carto-voyager': {
-          type: 'raster',
-          tiles: [
-            'https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png'
-          ],
-          tileSize: 256,
-          attribution: '© <a href="https://carto.com" target="_blank">CARTO</a>'
-        }
-      },
-      layers: [
-        {
-          id: 'carto-voyager-layer',
-          type: 'raster',
-          source: 'carto-voyager'
-        }
-      ]
-    }
+    style: 'https://tiles.openfreemap.org/styles/liberty'
   },
   {
     name: 'Satellite',
@@ -61,26 +43,7 @@ const basemaps = [
   },
   {
     name: 'Dark',
-    style: {
-      version: 8,
-      sources: {
-        'carto-dark': {
-          type: 'raster',
-          tiles: [
-            'https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
-          ],
-          tileSize: 256,
-          attribution: '© <a href="https://carto.com" target="_blank">CARTO</a>'
-        }
-      },
-      layers: [
-        {
-          id: 'carto-voyager-layer',
-          type: 'raster',
-          source: 'carto-dark'
-        }
-      ]
-    }
+    style: 'https://tiles.openfreemap.org/styles/dark'
   }
 ];
 
@@ -136,46 +99,10 @@ function addLayers() {
   }
 }
 
-// Initialize all basemaps as layers
-function initializeBasemaps() {
-  basemaps.forEach((basemap, index) => {
-
-    const layerId = `basemap-${index}`;
-
-    const sourceKey = Object.keys(basemap.style.sources)[0];
-    if (!sourceKey || !basemap.style.sources[sourceKey].tiles) {
-      console.error(`Invalid source for basemap: ${basemap.name}`);
-      return;
-    }
-
-    map.addSource(layerId, {
-      type: 'raster',
-      tiles: basemap.style.sources[sourceKey].tiles,
-      tileSize: 256,
-      attribution: basemap.style.sources[sourceKey].attribution
-    });
-
-    map.addLayer({
-      id: layerId,
-      type: 'raster',
-      source: layerId,
-      layout: {},
-      paint: {
-        'raster-opacity': index === currentBasemapIndex ? 1 : 0
-      }
-    });
-  });
-}
-
-// Toggle basemaps by adjusting opacity
+// Toggle basemaps by swapping the map style
 function toggleBasemap() {
-  const currentLayerId = `basemap-${currentBasemapIndex}`;
   currentBasemapIndex = (currentBasemapIndex + 1) % basemaps.length;
-  const nextLayerId = `basemap-${currentBasemapIndex}`;
-
-  // Set opacity for the current and next basemap layers
-  map.setPaintProperty(currentLayerId, 'raster-opacity', 0);
-  map.setPaintProperty(nextLayerId, 'raster-opacity', 1);
+  map.setStyle(basemaps[currentBasemapIndex].style);
 
   // Update the button text
   const nextBasemapIndex = (currentBasemapIndex + 1) % basemaps.length;
@@ -192,11 +119,8 @@ if (basemapToggleButton) {
   basemapToggleButton.textContent = basemaps[nextBasemapIndex].name;
 }
 
-// Add layers once the initial style is loaded
-map.on('load', () => {
-  initializeBasemaps();
-  addLayers();
-});
+// Add layers whenever a style finishes loading (initial load and after each basemap switch)
+map.on('style.load', addLayers);
 
 // Interactions (these listeners persist across style changes)
 map.on('click', 'jacarandas-point', (e) => {
