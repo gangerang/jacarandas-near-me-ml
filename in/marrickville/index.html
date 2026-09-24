@@ -22,12 +22,23 @@
     <script src='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js'></script>
     <link href='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/pmtiles@4.5.0/dist/pmtiles.js'></script>
-    <link href='/style.css?v=3' rel='stylesheet' />
+    <link href='/style.css?v=4' rel='stylesheet' />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 100%22><text y=%22.9em%22 font-size=%2290%22>💜</text></svg>">
 </head>
 <body>
 
 <div id='map'></div>
+
+<aside id='suburb-panel' data-slug='marrickville' data-name='Marrickville' data-bounds='151.13661,-33.92649,151.17503,-33.89807'>
+    <button type='button' class='panel-close' aria-label='Close'>×</button>
+    <h2>Jacarandas in Marrickville</h2>
+    <p class='stats'><strong>267 jacarandas</strong>, about 47 per km². <strong>#109</strong> of 151 suburbs for jacaranda density.</p>
+    <h3>Biggest trees</h3>
+    <ol class='biggest'><li><button type='button' data-lng='151.140799' data-lat='-33.914474' data-area='306'>20 m across</button></li><li><button type='button' data-lng='151.16068' data-lat='-33.913604' data-area='240'>17 m across</button></li><li><button type='button' data-lng='151.156619' data-lat='-33.912936' data-area='239'>17 m across</button></li><li><button type='button' data-lng='151.143213' data-lat='-33.91395' data-area='207'>16 m across</button></li><li><button type='button' data-lng='151.153786' data-lat='-33.91569' data-area='190'>16 m across</button></li></ol>
+    <h3>Nearby suburbs</h3>
+    <ul class='nearby'><li><a href='/in/dulwich-hill/' data-slug='dulwich-hill'>Dulwich Hill</a> <span>178</span></li><li><a href='/in/enmore/' data-slug='enmore'>Enmore</a> <span>53</span></li><li><a href='/in/lewisham/' data-slug='lewisham'>Lewisham</a> <span>76</span></li><li><a href='/in/newtown/' data-slug='newtown'>Newtown</a> <span>228</span></li><li><a href='/in/petersham/' data-slug='petersham'>Petersham</a> <span>159</span></li><li><a href='/in/st-peters/' data-slug='st-peters'>St Peters</a> <span>20</span></li><li><a href='/in/stanmore/' data-slug='stanmore'>Stanmore</a> <span>122</span></li><li><a href='/in/sydenham/' data-slug='sydenham'>Sydenham</a> <span>3</span></li></ul>
+    <p class='all-suburbs'><a href='/in/'>All suburbs, ranked</a></p>
+  </aside>
 
 <dialog id='intro'>
     <h1>Jacarandas in Marrickville</h1>
@@ -42,10 +53,10 @@
         <button value='locate' class='primary'>Find jacarandas near me</button>
         <button value='browse'>Just browse</button>
     </form>
-    <p class='credit'>An <a href='https://al3x.au' target='_blank'>al3x.au</a> project</p>
+    <p class='credit'><a href='/in/'>Browse by suburb</a> · An <a href='https://al3x.au' target='_blank'>al3x.au</a> project</p>
 </dialog>
 
-<script src='/map.js?v=4'></script>
+<script src='/map.js?v=5'></script>
 
 </body>
 </html>

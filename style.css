@@ -114,18 +114,22 @@ body { margin:0; padding:0; }
 }
 
 .tree-popup {
-    font: 14px system-ui, sans-serif;
+    font: 14px/1.4 system-ui, sans-serif;
 }
 
 .tree-popup p {
-    margin: 0 0 8px;
+    margin: 0 0 10px;
 }
 
-.tree-popup a,
-.tree-popup button {
-    display: inline-block;
-    margin-right: 6px;
-    padding: 5px 10px;
+.tree-popup .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.tree-popup .actions a,
+.tree-popup .actions button {
+    padding: 5px 9px;
     border: 1px solid #8A2BE2;
     border-radius: 6px;
     background: white;
@@ -135,11 +139,191 @@ body { margin:0; padding:0; }
     cursor: pointer;
 }
 
+.tree-popup .more {
+    margin-top: 10px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: #6a1fb5;
+    font: 600 13px system-ui, sans-serif;
+    cursor: pointer;
+}
+
 .tree-popup input {
     width: 100%;
     box-sizing: border-box;
     margin-top: 8px;
     font-size: 12px;
+}
+
+#suburb-panel {
+    position: absolute;
+    z-index: 3;
+    box-sizing: border-box;
+    overflow-y: auto;
+    padding: 16px 18px;
+    border-radius: 12px;
+    background: white;
+    box-shadow: 0 4px 24px rgba(0,0,0,.25);
+    font: 14px/1.45 system-ui, sans-serif;
+    color: #333;
+    /* Phones: a sheet above the attribution */
+    left: 8px;
+    right: 8px;
+    bottom: 52px;
+    max-height: 42%;
+}
+
+@media (min-width: 700px) {
+    #suburb-panel {
+        top: 10px;
+        right: auto;
+        bottom: auto;
+        width: 300px;
+        max-height: calc(100% - 60px);
+    }
+}
+
+#suburb-panel[hidden] {
+    display: none;
+}
+
+#suburb-panel h2 {
+    margin: 0 28px 6px 0;
+    font-size: 20px;
+    color: #6a1fb5;
+}
+
+#suburb-panel h3 {
+    margin: 14px 0 6px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: #777;
+}
+
+#suburb-panel .stats {
+    margin: 0;
+}
+
+#suburb-panel .panel-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 50%;
+    background: #f1ebf8;
+    color: #6a1fb5;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+#suburb-panel ol,
+#suburb-panel ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#suburb-panel .biggest {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    counter-reset: biggest;
+}
+
+#suburb-panel .biggest button {
+    padding: 4px 9px;
+    border: 1px solid #8A2BE2;
+    border-radius: 14px;
+    background: white;
+    color: #6a1fb5;
+    font: 600 13px system-ui, sans-serif;
+    cursor: pointer;
+}
+
+#suburb-panel .biggest li {
+    counter-increment: biggest;
+}
+
+#suburb-panel .biggest button::before {
+    content: counter(biggest) ". ";
+    color: #999;
+}
+
+#suburb-panel .nearby li {
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 0;
+    border-bottom: 1px solid #f0eaf7;
+}
+
+#suburb-panel .nearby span,
+.index-page td:nth-child(n+3) {
+    color: #777;
+    font-variant-numeric: tabular-nums;
+}
+
+#suburb-panel a,
+.index-page a {
+    color: #6a1fb5;
+}
+
+#suburb-panel .all-suburbs {
+    margin: 12px 0 0;
+    font-weight: 600;
+}
+
+.index-page {
+    font: 15px/1.5 system-ui, sans-serif;
+    color: #222;
+    background: #faf7fd;
+}
+
+.index-page main {
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+.index-page h1 {
+    margin: 8px 0;
+    color: #6a1fb5;
+}
+
+.index-page table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.index-page th,
+.index-page td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #f0eaf7;
+    text-align: left;
+}
+
+.index-page th {
+    font-size: 13px;
+    color: #777;
+}
+
+.index-page td:first-child {
+    width: 2.5em;
+    color: #999;
+}
+
+.index-page .credit {
+    margin-top: 16px;
+    font-size: 13px;
+    color: #666;
+    text-align: center;
 }
 
 #env-banner {

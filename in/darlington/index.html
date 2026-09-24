@@ -22,12 +22,23 @@
     <script src='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js'></script>
     <link href='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/pmtiles@4.5.0/dist/pmtiles.js'></script>
-    <link href='/style.css?v=3' rel='stylesheet' />
+    <link href='/style.css?v=4' rel='stylesheet' />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 100%22><text y=%22.9em%22 font-size=%2290%22>💜</text></svg>">
 </head>
 <body>
 
 <div id='map'></div>
+
+<aside id='suburb-panel' data-slug='darlington' data-name='Darlington' data-bounds='151.18767,-33.89406,151.19882,-33.88768'>
+    <button type='button' class='panel-close' aria-label='Close'>×</button>
+    <h2>Jacarandas in Darlington</h2>
+    <p class='stats'><strong>31 jacarandas</strong>, about 81 per km². <strong>#79</strong> of 151 suburbs for jacaranda density.</p>
+    <h3>Biggest trees</h3>
+    <ol class='biggest'><li><button type='button' data-lng='151.197137' data-lat='-33.889901' data-area='236'>17 m across</button></li><li><button type='button' data-lng='151.19595' data-lat='-33.891691' data-area='181'>15 m across</button></li><li><button type='button' data-lng='151.197614' data-lat='-33.889458' data-area='143'>13 m across</button></li><li><button type='button' data-lng='151.195084' data-lat='-33.88919' data-area='129'>13 m across</button></li><li><button type='button' data-lng='151.197605' data-lat='-33.889179' data-area='125'>13 m across</button></li></ol>
+    <h3>Nearby suburbs</h3>
+    <ul class='nearby'><li><a href='/in/camperdown/' data-slug='camperdown'>Camperdown</a> <span>159</span></li><li><a href='/in/chippendale/' data-slug='chippendale'>Chippendale</a> <span>19</span></li><li><a href='/in/eveleigh/' data-slug='eveleigh'>Eveleigh</a> <span>4</span></li><li><a href='/in/newtown/' data-slug='newtown'>Newtown</a> <span>228</span></li><li><a href='/in/redfern/' data-slug='redfern'>Redfern</a> <span>136</span></li></ul>
+    <p class='all-suburbs'><a href='/in/'>All suburbs, ranked</a></p>
+  </aside>
 
 <dialog id='intro'>
     <h1>Jacarandas in Darlington</h1>
@@ -42,10 +53,10 @@
         <button value='locate' class='primary'>Find jacarandas near me</button>
         <button value='browse'>Just browse</button>
     </form>
-    <p class='credit'>An <a href='https://al3x.au' target='_blank'>al3x.au</a> project</p>
+    <p class='credit'><a href='/in/'>Browse by suburb</a> · An <a href='https://al3x.au' target='_blank'>al3x.au</a> project</p>
 </dialog>
 
-<script src='/map.js?v=4'></script>
+<script src='/map.js?v=5'></script>
 
 </body>
 </html>

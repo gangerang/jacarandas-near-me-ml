@@ -22,12 +22,23 @@
     <script src='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js'></script>
     <link href='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/pmtiles@4.5.0/dist/pmtiles.js'></script>
-    <link href='/style.css?v=3' rel='stylesheet' />
+    <link href='/style.css?v=4' rel='stylesheet' />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 100%22><text y=%22.9em%22 font-size=%2290%22>💜</text></svg>">
 </head>
 <body>
 
 <div id='map'></div>
+
+<aside id='suburb-panel' data-slug='bondi-junction' data-name='Bondi Junction' data-bounds='151.24079,-33.89709,151.25975,-33.88891'>
+    <button type='button' class='panel-close' aria-label='Close'>×</button>
+    <h2>Jacarandas in Bondi Junction</h2>
+    <p class='stats'><strong>40 jacarandas</strong>, about 37 per km². <strong>#116</strong> of 151 suburbs for jacaranda density.</p>
+    <h3>Biggest trees</h3>
+    <ol class='biggest'><li><button type='button' data-lng='151.253214' data-lat='-33.895423' data-area='149'>14 m across</button></li><li><button type='button' data-lng='151.244389' data-lat='-33.889965' data-area='146'>14 m across</button></li><li><button type='button' data-lng='151.253874' data-lat='-33.891276' data-area='87'>11 m across</button></li><li><button type='button' data-lng='151.242786' data-lat='-33.89204' data-area='69'>9 m across</button></li><li><button type='button' data-lng='151.241405' data-lat='-33.893165' data-area='65'>9 m across</button></li></ol>
+    <h3>Nearby suburbs</h3>
+    <ul class='nearby'><li><a href='/in/bellevue-hill/' data-slug='bellevue-hill'>Bellevue Hill</a> <span>205</span></li><li><a href='/in/bondi/' data-slug='bondi'>Bondi</a> <span>27</span></li><li><a href='/in/centennial-park/' data-slug='centennial-park'>Centennial Park</a> <span>52</span></li><li><a href='/in/queens-park/' data-slug='queens-park'>Queens Park</a> <span>39</span></li><li><a href='/in/waverley/' data-slug='waverley'>Waverley</a> <span>14</span></li><li><a href='/in/woollahra/' data-slug='woollahra'>Woollahra</a> <span>165</span></li></ul>
+    <p class='all-suburbs'><a href='/in/'>All suburbs, ranked</a></p>
+  </aside>
 
 <dialog id='intro'>
     <h1>Jacarandas in Bondi Junction</h1>
@@ -42,10 +53,10 @@
         <button value='locate' class='primary'>Find jacarandas near me</button>
         <button value='browse'>Just browse</button>
     </form>
-    <p class='credit'>An <a href='https://al3x.au' target='_blank'>al3x.au</a> project</p>
+    <p class='credit'><a href='/in/'>Browse by suburb</a> · An <a href='https://al3x.au' target='_blank'>al3x.au</a> project</p>
 </dialog>
 
-<script src='/map.js?v=4'></script>
+<script src='/map.js?v=5'></script>
 
 </body>
 </html>

@@ -22,12 +22,23 @@
     <script src='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js'></script>
     <link href='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/pmtiles@4.5.0/dist/pmtiles.js'></script>
-    <link href='/style.css?v=3' rel='stylesheet' />
+    <link href='/style.css?v=4' rel='stylesheet' />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 100%22><text y=%22.9em%22 font-size=%2290%22>💜</text></svg>">
 </head>
 <body>
 
 <div id='map'></div>
+
+<aside id='suburb-panel' data-slug='potts-point' data-name='Potts Point' data-bounds='151.22128,-33.87599,151.23085,-33.85811'>
+    <button type='button' class='panel-close' aria-label='Close'>×</button>
+    <h2>Jacarandas in Potts Point</h2>
+    <p class='stats'><strong>10 jacarandas</strong>, about 17 per km². <strong>#136</strong> of 151 suburbs for jacaranda density.</p>
+    <h3>Biggest trees</h3>
+    <ol class='biggest'><li><button type='button' data-lng='151.223707' data-lat='-33.867728' data-area='235'>17 m across</button></li><li><button type='button' data-lng='151.223665' data-lat='-33.868095' data-area='61'>9 m across</button></li><li><button type='button' data-lng='151.224324' data-lat='-33.866708' data-area='40'>7 m across</button></li><li><button type='button' data-lng='151.224257' data-lat='-33.867718' data-area='36'>7 m across</button></li><li><button type='button' data-lng='151.224304' data-lat='-33.874319' data-area='34'>7 m across</button></li></ol>
+    <h3>Nearby suburbs</h3>
+    <ul class='nearby'><li><a href='/in/darlinghurst/' data-slug='darlinghurst'>Darlinghurst</a> <span>59</span></li><li><a href='/in/elizabeth-bay/' data-slug='elizabeth-bay'>Elizabeth Bay</a> <span>25</span></li><li><a href='/in/rushcutters-bay/' data-slug='rushcutters-bay'>Rushcutters Bay</a> <span>33</span></li><li><a href='/in/woolloomooloo/' data-slug='woolloomooloo'>Woolloomooloo</a> <span>41</span></li></ul>
+    <p class='all-suburbs'><a href='/in/'>All suburbs, ranked</a></p>
+  </aside>
 
 <dialog id='intro'>
     <h1>Jacarandas in Potts Point</h1>
@@ -42,10 +53,10 @@
         <button value='locate' class='primary'>Find jacarandas near me</button>
         <button value='browse'>Just browse</button>
     </form>
-    <p class='credit'>An <a href='https://al3x.au' target='_blank'>al3x.au</a> project</p>
+    <p class='credit'><a href='/in/'>Browse by suburb</a> · An <a href='https://al3x.au' target='_blank'>al3x.au</a> project</p>
 </dialog>
 
-<script src='/map.js?v=4'></script>
+<script src='/map.js?v=5'></script>
 
 </body>
 </html>

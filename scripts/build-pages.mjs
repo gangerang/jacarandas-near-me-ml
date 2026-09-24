@@ -1,4 +1,4 @@
-// Write a page per suburb in data/suburbs.json to in/<slug>/index.html, plus sitemap.xml.
+// Write a page per suburb in data/suburbs.json to in/<slug>/index.html, a ranked list at in/index.html, and sitemap.xml.
 // With --images, also screenshot each suburb's link preview to in/<slug>/og.jpg (needs Chromium;
 // set CHROMIUM to its path if it isn't /usr/bin/chromium). --only=glebe,mosman limits the images to those suburbs.
 //
@@ -16,6 +16,30 @@ const only = process.argv.find((a) => a.startsWith('--only='))?.slice(7).split('
 
 const escape = (text) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 const trees = (count) => `${count.toLocaleString('en-AU')} jacaranda${count === 1 ? '' : 's'}`;
+
+// Must match acrossMetres() in map.js
+const across = (area) => `${Math.round(2 * Math.sqrt(area / Math.PI))} m across`;
+const bySlug = new Map(suburbs.map((s) => [s.slug, s]));
+
+// The map fetches this from suburb pages to show it anywhere, so it's the only copy of the panel markup
+function suburbPanel(suburb) {
+  const name = escape(suburb.name);
+  const biggest = suburb.biggest.map(([lng, lat, area]) =>
+    `<li><button type='button' data-lng='${lng}' data-lat='${lat}' data-area='${area}'>${across(area)}</button></li>`).join('');
+  const nearby = suburb.neighbours.map((slug) => bySlug.get(slug)).map((n) =>
+    `<li><a href='/in/${n.slug}/' data-slug='${n.slug}'>${escape(n.name)}</a> <span>${n.count.toLocaleString('en-AU')}</span></li>`).join('');
+  return `<aside id='suburb-panel' data-slug='${suburb.slug}' data-name='${name}' data-bounds='${suburb.bbox.join(',')}'>
+    <button type='button' class='panel-close' aria-label='Close'>×</button>
+    <h2>Jacarandas in ${name}</h2>
+    <p class='stats'><strong>${trees(suburb.count)}</strong>, about ${suburb.perKm2} per km². <strong>#${suburb.densityRank}</strong> of ${suburbs.length} suburbs for jacaranda density.</p>
+    <h3>Biggest trees</h3>
+    <ol class='biggest'>${biggest}</ol>
+    ${nearby ? `<h3>Nearby suburbs</h3>
+    <ul class='nearby'>${nearby}</ul>` : ''}
+    <p class='all-suburbs'><a href='/in/'>All suburbs, ranked</a></p>
+  </aside>
+`;
+}
 
 function replace(html, from, to) {
   if (!html.includes(from)) throw new Error(`index.html no longer contains: ${from}`);
@@ -37,6 +61,8 @@ function suburbPage(suburb) {
   html = replace(html, '<meta property="og:image" content="https://www.jacarandas.com.au/og-image.jpg">', `<meta property="og:image" content="${url}og.jpg">`);
   html = replace(html, /<meta property="og:image:alt" content="[^"]*">/.exec(html)[0],
     `<meta property="og:image:alt" content="Map of ${name} with its jacaranda trees marked in purple">`);
+  html = replace(html, "<dialog id='intro'>", `${suburbPanel(suburb)}
+<dialog id='intro'>`);
   html = replace(html, '<h1>Jacarandas Near Me</h1>', `<h1>Jacarandas in ${name}</h1>`);
   html = replace(html, "<p class='lede'>Over 21,000 jacarandas across inner Sydney,",
     `<p class='lede'>${trees(suburb.count)} in ${name}, and over 21,000 across inner Sydney,`);
@@ -56,14 +82,47 @@ for (const suburb of suburbs) {
   writeFileSync(join(dir, 'index.html'), suburbPage(suburb));
 }
 
-const urls = [`${SITE}/`, ...suburbs.map((s) => `${SITE}/in/${s.slug}/`)];
+writeFileSync(join(root, 'in', 'index.html'), indexPage());
+
+const urls = [`${SITE}/`, `${SITE}/in/`, ...suburbs.map((s) => `${SITE}/in/${s.slug}/`)];
 writeFileSync(join(root, 'sitemap.xml'),
   '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
   urls.map((u) => `  <url><loc>${u}</loc></url>`).join('\n') + '\n</urlset>\n');
 
-console.log(`Wrote ${suburbs.length} suburb pages and sitemap.xml`);
+console.log(`Wrote ${suburbs.length} suburb pages, in/index.html and sitemap.xml`);
 
 if (withImages) await screenshotSuburbs();
+
+function indexPage() {
+  const description = `Every mapped Sydney suburb ranked by jacarandas per square kilometre.`;
+  const rows = [...suburbs].sort((a, b) => a.densityRank - b.densityRank).map((s) =>
+    `      <tr><td>${s.densityRank}</td><td><a href='/in/${s.slug}/'>${escape(s.name)}</a></td><td>${s.count.toLocaleString('en-AU')}</td><td>${s.perKm2}</td></tr>`).join('\n');
+  const head = /<head>[\s\S]*<\/head>/.exec(template)[0]
+    .replace(/<script[^>]*><\/script>\n\s*/g, '')
+    .replace(/<link href='https:\/\/unpkg[^>]*>\n\s*/, '');
+  let html = `<!DOCTYPE html>\n<html lang="en">\n${head}\n<body class='index-page'>\n<main>
+  <p><a href='/'>← Back to the map</a></p>
+  <h1>Jacarandas by suburb</h1>
+  <p>${suburbs.length} Sydney suburbs, ranked by jacarandas per square kilometre. Tap a suburb to see its trees.</p>
+  <table>
+    <thead><tr><th>#</th><th>Suburb</th><th>Trees</th><th>Per km²</th></tr></thead>
+    <tbody>
+${rows}
+    </tbody>
+  </table>
+  <p class='credit'>An <a href='https://al3x.au' target='_blank'>al3x.au</a> project</p>
+</main>
+</body>
+</html>
+`;
+  html = replace(html, '<title>Jacarandas Near Me</title>', '<title>Jacarandas by suburb · Jacarandas Near Me</title>');
+  html = replace(html, /<meta name="description" content="[^"]*">/.exec(html)[0], `<meta name="description" content="${description}">`);
+  html = replace(html, '<link rel="canonical" href="https://www.jacarandas.com.au/">', `<link rel="canonical" href="${SITE}/in/">`);
+  html = replace(html, '<meta property="og:title" content="Jacarandas Near Me">', '<meta property="og:title" content="Jacarandas by suburb">');
+  html = replace(html, /<meta property="og:description" content="[^"]*">/.exec(html)[0], `<meta property="og:description" content="${description}">`);
+  html = replace(html, '<meta property="og:url" content="https://www.jacarandas.com.au/">', `<meta property="og:url" content="${SITE}/in/">`);
+  return html;
+}
 
 // Static server with Range support, which PMTiles needs
 function serve() {

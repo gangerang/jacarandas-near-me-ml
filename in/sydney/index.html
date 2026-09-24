@@ -22,12 +22,23 @@
     <script src='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js'></script>
     <link href='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/pmtiles@4.5.0/dist/pmtiles.js'></script>
-    <link href='/style.css?v=3' rel='stylesheet' />
+    <link href='/style.css?v=4' rel='stylesheet' />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 100%22><text y=%22.9em%22 font-size=%2290%22>💜</text></svg>">
 </head>
 <body>
 
 <div id='map'></div>
+
+<aside id='suburb-panel' data-slug='sydney' data-name='Sydney' data-bounds='151.19703,-33.8797,151.22291,-33.85618'>
+    <button type='button' class='panel-close' aria-label='Close'>×</button>
+    <h2>Jacarandas in Sydney</h2>
+    <p class='stats'><strong>38 jacarandas</strong>, about 13 per km². <strong>#139</strong> of 151 suburbs for jacaranda density.</p>
+    <h3>Biggest trees</h3>
+    <ol class='biggest'><li><button type='button' data-lng='151.21122' data-lat='-33.869459' data-area='176'>15 m across</button></li><li><button type='button' data-lng='151.206454' data-lat='-33.873693' data-area='152'>14 m across</button></li><li><button type='button' data-lng='151.206736' data-lat='-33.873088' data-area='95'>11 m across</button></li><li><button type='button' data-lng='151.219881' data-lat='-33.863254' data-area='93'>11 m across</button></li><li><button type='button' data-lng='151.205646' data-lat='-33.864029' data-area='90'>11 m across</button></li></ol>
+    <h3>Nearby suburbs</h3>
+    <ul class='nearby'><li><a href='/in/barangaroo/' data-slug='barangaroo'>Barangaroo</a> <span>5</span></li><li><a href='/in/darlinghurst/' data-slug='darlinghurst'>Darlinghurst</a> <span>59</span></li><li><a href='/in/haymarket/' data-slug='haymarket'>Haymarket</a> <span>4</span></li><li><a href='/in/millers-point/' data-slug='millers-point'>Millers Point</a> <span>12</span></li><li><a href='/in/pyrmont/' data-slug='pyrmont'>Pyrmont</a> <span>42</span></li><li><a href='/in/surry-hills/' data-slug='surry-hills'>Surry Hills</a> <span>75</span></li><li><a href='/in/the-rocks/' data-slug='the-rocks'>The Rocks</a> <span>7</span></li><li><a href='/in/ultimo/' data-slug='ultimo'>Ultimo</a> <span>18</span></li><li><a href='/in/woolloomooloo/' data-slug='woolloomooloo'>Woolloomooloo</a> <span>41</span></li></ul>
+    <p class='all-suburbs'><a href='/in/'>All suburbs, ranked</a></p>
+  </aside>
 
 <dialog id='intro'>
     <h1>Jacarandas in Sydney</h1>
@@ -42,10 +53,10 @@
         <button value='locate' class='primary'>Find jacarandas near me</button>
         <button value='browse'>Just browse</button>
     </form>
-    <p class='credit'>An <a href='https://al3x.au' target='_blank'>al3x.au</a> project</p>
+    <p class='credit'><a href='/in/'>Browse by suburb</a> · An <a href='https://al3x.au' target='_blank'>al3x.au</a> project</p>
 </dialog>
 
-<script src='/map.js?v=4'></script>
+<script src='/map.js?v=5'></script>
 
 </body>
 </html>

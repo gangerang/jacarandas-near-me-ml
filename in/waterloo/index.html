@@ -22,12 +22,23 @@
     <script src='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js'></script>
     <link href='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/pmtiles@4.5.0/dist/pmtiles.js'></script>
-    <link href='/style.css?v=3' rel='stylesheet' />
+    <link href='/style.css?v=4' rel='stylesheet' />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 100%22><text y=%22.9em%22 font-size=%2290%22>💜</text></svg>">
 </head>
 <body>
 
 <div id='map'></div>
+
+<aside id='suburb-panel' data-slug='waterloo' data-name='Waterloo' data-bounds='151.199,-33.90551,151.21586,-33.89517'>
+    <button type='button' class='panel-close' aria-label='Close'>×</button>
+    <h2>Jacarandas in Waterloo</h2>
+    <p class='stats'><strong>57 jacarandas</strong>, about 50 per km². <strong>#105</strong> of 151 suburbs for jacaranda density.</p>
+    <h3>Biggest trees</h3>
+    <ol class='biggest'><li><button type='button' data-lng='151.206925' data-lat='-33.897379' data-area='143'>13 m across</button></li><li><button type='button' data-lng='151.199194' data-lat='-33.895192' data-area='121'>12 m across</button></li><li><button type='button' data-lng='151.206667' data-lat='-33.899711' data-area='111'>12 m across</button></li><li><button type='button' data-lng='151.202169' data-lat='-33.898256' data-area='105'>12 m across</button></li><li><button type='button' data-lng='151.209413' data-lat='-33.897065' data-area='103'>11 m across</button></li></ol>
+    <h3>Nearby suburbs</h3>
+    <ul class='nearby'><li><a href='/in/alexandria/' data-slug='alexandria'>Alexandria</a> <span>75</span></li><li><a href='/in/kensington/' data-slug='kensington'>Kensington</a> <span>161</span></li><li><a href='/in/moore-park/' data-slug='moore-park'>Moore Park</a> <span>15</span></li><li><a href='/in/redfern/' data-slug='redfern'>Redfern</a> <span>136</span></li><li><a href='/in/zetland/' data-slug='zetland'>Zetland</a> <span>16</span></li></ul>
+    <p class='all-suburbs'><a href='/in/'>All suburbs, ranked</a></p>
+  </aside>
 
 <dialog id='intro'>
     <h1>Jacarandas in Waterloo</h1>
@@ -42,10 +53,10 @@
         <button value='locate' class='primary'>Find jacarandas near me</button>
         <button value='browse'>Just browse</button>
     </form>
-    <p class='credit'>An <a href='https://al3x.au' target='_blank'>al3x.au</a> project</p>
+    <p class='credit'><a href='/in/'>Browse by suburb</a> · An <a href='https://al3x.au' target='_blank'>al3x.au</a> project</p>
 </dialog>
 
-<script src='/map.js?v=4'></script>
+<script src='/map.js?v=5'></script>
 
 </body>
 </html>

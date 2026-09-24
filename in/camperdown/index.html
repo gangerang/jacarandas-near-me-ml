@@ -22,12 +22,23 @@
     <script src='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js'></script>
     <link href='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/pmtiles@4.5.0/dist/pmtiles.js'></script>
-    <link href='/style.css?v=3' rel='stylesheet' />
+    <link href='/style.css?v=4' rel='stylesheet' />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 100%22><text y=%22.9em%22 font-size=%2290%22>💜</text></svg>">
 </head>
 <body>
 
 <div id='map'></div>
+
+<aside id='suburb-panel' data-slug='camperdown' data-name='Camperdown' data-bounds='151.17155,-33.89462,151.19469,-33.8827'>
+    <button type='button' class='panel-close' aria-label='Close'>×</button>
+    <h2>Jacarandas in Camperdown</h2>
+    <p class='stats'><strong>159 jacarandas</strong>, about 107 per km². <strong>#53</strong> of 151 suburbs for jacaranda density.</p>
+    <h3>Biggest trees</h3>
+    <ol class='biggest'><li><button type='button' data-lng='151.183931' data-lat='-33.885599' data-area='546'>26 m across</button></li><li><button type='button' data-lng='151.187875' data-lat='-33.887847' data-area='520'>26 m across</button></li><li><button type='button' data-lng='151.180752' data-lat='-33.884528' data-area='267'>18 m across</button></li><li><button type='button' data-lng='151.183912' data-lat='-33.889722' data-area='239'>17 m across</button></li><li><button type='button' data-lng='151.18849' data-lat='-33.890562' data-area='235'>17 m across</button></li></ol>
+    <h3>Nearby suburbs</h3>
+    <ul class='nearby'><li><a href='/in/annandale/' data-slug='annandale'>Annandale</a> <span>185</span></li><li><a href='/in/chippendale/' data-slug='chippendale'>Chippendale</a> <span>19</span></li><li><a href='/in/darlington/' data-slug='darlington'>Darlington</a> <span>31</span></li><li><a href='/in/forest-lodge/' data-slug='forest-lodge'>Forest Lodge</a> <span>59</span></li><li><a href='/in/glebe/' data-slug='glebe'>Glebe</a> <span>172</span></li><li><a href='/in/newtown/' data-slug='newtown'>Newtown</a> <span>228</span></li><li><a href='/in/stanmore/' data-slug='stanmore'>Stanmore</a> <span>122</span></li></ul>
+    <p class='all-suburbs'><a href='/in/'>All suburbs, ranked</a></p>
+  </aside>
 
 <dialog id='intro'>
     <h1>Jacarandas in Camperdown</h1>
@@ -42,10 +53,10 @@
         <button value='locate' class='primary'>Find jacarandas near me</button>
         <button value='browse'>Just browse</button>
     </form>
-    <p class='credit'>An <a href='https://al3x.au' target='_blank'>al3x.au</a> project</p>
+    <p class='credit'><a href='/in/'>Browse by suburb</a> · An <a href='https://al3x.au' target='_blank'>al3x.au</a> project</p>
 </dialog>
 
-<script src='/map.js?v=4'></script>
+<script src='/map.js?v=5'></script>
 
 </body>
 </html>

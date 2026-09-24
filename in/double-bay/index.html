@@ -22,12 +22,23 @@
     <script src='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js'></script>
     <link href='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/pmtiles@4.5.0/dist/pmtiles.js'></script>
-    <link href='/style.css?v=3' rel='stylesheet' />
+    <link href='/style.css?v=4' rel='stylesheet' />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 100%22><text y=%22.9em%22 font-size=%2290%22>💜</text></svg>">
 </head>
 <body>
 
 <div id='map'></div>
+
+<aside id='suburb-panel' data-slug='double-bay' data-name='Double Bay' data-bounds='151.23718,-33.8864,151.24901,-33.87173'>
+    <button type='button' class='panel-close' aria-label='Close'>×</button>
+    <h2>Jacarandas in Double Bay</h2>
+    <p class='stats'><strong>88 jacarandas</strong>, about 112 per km². <strong>#47</strong> of 151 suburbs for jacaranda density.</p>
+    <h3>Biggest trees</h3>
+    <ol class='biggest'><li><button type='button' data-lng='151.238961' data-lat='-33.877853' data-area='343'>21 m across</button></li><li><button type='button' data-lng='151.239304' data-lat='-33.877498' data-area='250'>18 m across</button></li><li><button type='button' data-lng='151.238587' data-lat='-33.87783' data-area='215'>17 m across</button></li><li><button type='button' data-lng='151.23756' data-lat='-33.877778' data-area='207'>16 m across</button></li><li><button type='button' data-lng='151.245043' data-lat='-33.874407' data-area='165'>14 m across</button></li></ol>
+    <h3>Nearby suburbs</h3>
+    <ul class='nearby'><li><a href='/in/bellevue-hill/' data-slug='bellevue-hill'>Bellevue Hill</a> <span>205</span></li><li><a href='/in/darling-point/' data-slug='darling-point'>Darling Point</a> <span>75</span></li><li><a href='/in/edgecliff/' data-slug='edgecliff'>Edgecliff</a> <span>43</span></li><li><a href='/in/point-piper/' data-slug='point-piper'>Point Piper</a> <span>39</span></li><li><a href='/in/woollahra/' data-slug='woollahra'>Woollahra</a> <span>165</span></li></ul>
+    <p class='all-suburbs'><a href='/in/'>All suburbs, ranked</a></p>
+  </aside>
 
 <dialog id='intro'>
     <h1>Jacarandas in Double Bay</h1>
@@ -42,10 +53,10 @@
         <button value='locate' class='primary'>Find jacarandas near me</button>
         <button value='browse'>Just browse</button>
     </form>
-    <p class='credit'>An <a href='https://al3x.au' target='_blank'>al3x.au</a> project</p>
+    <p class='credit'><a href='/in/'>Browse by suburb</a> · An <a href='https://al3x.au' target='_blank'>al3x.au</a> project</p>
 </dialog>
 
-<script src='/map.js?v=4'></script>
+<script src='/map.js?v=5'></script>
 
 </body>
 </html>

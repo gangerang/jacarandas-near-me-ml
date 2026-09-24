@@ -22,12 +22,23 @@
     <script src='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js'></script>
     <link href='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/pmtiles@4.5.0/dist/pmtiles.js'></script>
-    <link href='/style.css?v=3' rel='stylesheet' />
+    <link href='/style.css?v=4' rel='stylesheet' />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 100%22><text y=%22.9em%22 font-size=%2290%22>💜</text></svg>">
 </head>
 <body>
 
 <div id='map'></div>
+
+<aside id='suburb-panel' data-slug='hurlstone-park' data-name='Hurlstone Park' data-bounds='151.12203,-33.9163,151.13499,-33.90382'>
+    <button type='button' class='panel-close' aria-label='Close'>×</button>
+    <h2>Jacarandas in Hurlstone Park</h2>
+    <p class='stats'><strong>98 jacarandas</strong>, about 82 per km². <strong>#78</strong> of 151 suburbs for jacaranda density.</p>
+    <h3>Biggest trees</h3>
+    <ol class='biggest'><li><button type='button' data-lng='151.130559' data-lat='-33.910882' data-area='158'>14 m across</button></li><li><button type='button' data-lng='151.129472' data-lat='-33.913087' data-area='149'>14 m across</button></li><li><button type='button' data-lng='151.125516' data-lat='-33.904016' data-area='143'>13 m across</button></li><li><button type='button' data-lng='151.128596' data-lat='-33.911497' data-area='134'>13 m across</button></li><li><button type='button' data-lng='151.127661' data-lat='-33.907261' data-area='121'>12 m across</button></li></ol>
+    <h3>Nearby suburbs</h3>
+    <ul class='nearby'><li><a href='/in/ashbury/' data-slug='ashbury'>Ashbury</a> <span>77</span></li><li><a href='/in/ashfield/' data-slug='ashfield'>Ashfield</a> <span>305</span></li><li><a href='/in/canterbury/' data-slug='canterbury'>Canterbury</a> <span>51</span></li><li><a href='/in/dulwich-hill/' data-slug='dulwich-hill'>Dulwich Hill</a> <span>178</span></li></ul>
+    <p class='all-suburbs'><a href='/in/'>All suburbs, ranked</a></p>
+  </aside>
 
 <dialog id='intro'>
     <h1>Jacarandas in Hurlstone Park</h1>
@@ -42,10 +53,10 @@
         <button value='locate' class='primary'>Find jacarandas near me</button>
         <button value='browse'>Just browse</button>
     </form>
-    <p class='credit'>An <a href='https://al3x.au' target='_blank'>al3x.au</a> project</p>
+    <p class='credit'><a href='/in/'>Browse by suburb</a> · An <a href='https://al3x.au' target='_blank'>al3x.au</a> project</p>
 </dialog>
 
-<script src='/map.js?v=4'></script>
+<script src='/map.js?v=5'></script>
 
 </body>
 </html>

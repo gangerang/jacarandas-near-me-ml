@@ -22,12 +22,23 @@
     <script src='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js'></script>
     <link href='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/pmtiles@4.5.0/dist/pmtiles.js'></script>
-    <link href='/style.css?v=3' rel='stylesheet' />
+    <link href='/style.css?v=4' rel='stylesheet' />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 100%22><text y=%22.9em%22 font-size=%2290%22>💜</text></svg>">
 </head>
 <body>
 
 <div id='map'></div>
+
+<aside id='suburb-panel' data-slug='middle-cove' data-name='Middle Cove' data-bounds='151.20087,-33.79779,151.22295,-33.78533'>
+    <button type='button' class='panel-close' aria-label='Close'>×</button>
+    <h2>Jacarandas in Middle Cove</h2>
+    <p class='stats'><strong>109 jacarandas</strong>, about 105 per km². <strong>#56</strong> of 151 suburbs for jacaranda density.</p>
+    <h3>Biggest trees</h3>
+    <ol class='biggest'><li><button type='button' data-lng='151.209835' data-lat='-33.796919' data-area='177'>15 m across</button></li><li><button type='button' data-lng='151.208607' data-lat='-33.791504' data-area='139'>13 m across</button></li><li><button type='button' data-lng='151.205465' data-lat='-33.787832' data-area='137'>13 m across</button></li><li><button type='button' data-lng='151.21326' data-lat='-33.792008' data-area='121'>12 m across</button></li><li><button type='button' data-lng='151.208014' data-lat='-33.792776' data-area='121'>12 m across</button></li></ol>
+    <h3>Nearby suburbs</h3>
+    <ul class='nearby'><li><a href='/in/castle-cove/' data-slug='castle-cove'>Castle Cove</a> <span>184</span></li><li><a href='/in/castlecrag/' data-slug='castlecrag'>Castlecrag</a> <span>135</span></li><li><a href='/in/chatswood/' data-slug='chatswood'>Chatswood</a> <span>617</span></li><li><a href='/in/north-willoughby/' data-slug='north-willoughby'>North Willoughby</a> <span>123</span></li><li><a href='/in/willoughby-east/' data-slug='willoughby-east'>Willoughby East</a> <span>73</span></li></ul>
+    <p class='all-suburbs'><a href='/in/'>All suburbs, ranked</a></p>
+  </aside>
 
 <dialog id='intro'>
     <h1>Jacarandas in Middle Cove</h1>
@@ -42,10 +53,10 @@
         <button value='locate' class='primary'>Find jacarandas near me</button>
         <button value='browse'>Just browse</button>
     </form>
-    <p class='credit'>An <a href='https://al3x.au' target='_blank'>al3x.au</a> project</p>
+    <p class='credit'><a href='/in/'>Browse by suburb</a> · An <a href='https://al3x.au' target='_blank'>al3x.au</a> project</p>
 </dialog>
 
-<script src='/map.js?v=4'></script>
+<script src='/map.js?v=5'></script>
 
 </body>
 </html>

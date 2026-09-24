@@ -1,6 +1,6 @@
 #!/bin/sh
 # Rebuild everything in data/ from data/jacarandas-combined.geojson:
-#   jacarandas.pmtiles  trees, tagged with their suburb
+#   jacarandas.pmtiles  trees, tagged with their suburb and size rank within it
 #   coverage.geojson    everything outside the mapped area
 #   suburbs.json        suburbs mostly inside the mapped area, for scripts/build-pages.mjs
 # Needs tippecanoe, ogr2ogr (GDAL with SpatiaLite), python3 and curl
@@ -47,7 +47,15 @@ ogr2ogr -f GeoJSON -lco COORDINATE_PRECISION=5 "$TMP/suburbs.geojson" "$DB" -dia
                ST_SimplifyPreserveTopology(s.geom, 0.0001) AS geometry
         FROM suburbs s, hull h WHERE ST_Intersects(s.geom, h.geometry)"
 
-python3 scripts/suburbs.py "$TMP/trees.geojson" "$TMP/suburbs.geojson" "$TMP/tagged.geojson" data/suburbs.json
+ogr2ogr -f CSV "$TMP/neighbours.csv" "$DB" -dialect sqlite \
+  -sql "SELECT a.suburbname AS a, b.suburbname AS b FROM suburbs a, suburbs b
+        WHERE a.fid < b.fid
+          AND b.fid IN (SELECT id FROM rtree_suburbs_geom r
+                        WHERE r.minx <= ST_MaxX(a.geom) AND r.maxx >= ST_MinX(a.geom)
+                          AND r.miny <= ST_MaxY(a.geom) AND r.maxy >= ST_MinY(a.geom))
+          AND ST_Intersects(a.geom, b.geom)"
+
+python3 scripts/suburbs.py "$TMP/trees.geojson" "$TMP/suburbs.geojson" "$TMP/neighbours.csv" "$TMP/tagged.geojson" data/suburbs.json
 
 tippecanoe -q -f -o data/jacarandas.pmtiles -l jacarandas \
   -Z8 -z14 -r1 --no-feature-limit --no-tile-size-limit \

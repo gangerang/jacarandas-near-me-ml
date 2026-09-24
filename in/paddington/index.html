@@ -22,12 +22,23 @@
     <script src='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js'></script>
     <link href='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/pmtiles@4.5.0/dist/pmtiles.js'></script>
-    <link href='/style.css?v=3' rel='stylesheet' />
+    <link href='/style.css?v=4' rel='stylesheet' />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 100%22><text y=%22.9em%22 font-size=%2290%22>💜</text></svg>">
 </head>
 <body>
 
 <div id='map'></div>
+
+<aside id='suburb-panel' data-slug='paddington' data-name='Paddington' data-bounds='151.21819,-33.8899,151.23762,-33.87678'>
+    <button type='button' class='panel-close' aria-label='Close'>×</button>
+    <h2>Jacarandas in Paddington</h2>
+    <p class='stats'><strong>197 jacarandas</strong>, about 120 per km². <strong>#39</strong> of 151 suburbs for jacaranda density.</p>
+    <h3>Biggest trees</h3>
+    <ol class='biggest'><li><button type='button' data-lng='151.228633' data-lat='-33.881077' data-area='254'>18 m across</button></li><li><button type='button' data-lng='151.227689' data-lat='-33.881234' data-area='249'>18 m across</button></li><li><button type='button' data-lng='151.231568' data-lat='-33.881178' data-area='248'>18 m across</button></li><li><button type='button' data-lng='151.229428' data-lat='-33.879918' data-area='205'>16 m across</button></li><li><button type='button' data-lng='151.234432' data-lat='-33.882842' data-area='204'>16 m across</button></li></ol>
+    <h3>Nearby suburbs</h3>
+    <ul class='nearby'><li><a href='/in/centennial-park/' data-slug='centennial-park'>Centennial Park</a> <span>52</span></li><li><a href='/in/darlinghurst/' data-slug='darlinghurst'>Darlinghurst</a> <span>59</span></li><li><a href='/in/edgecliff/' data-slug='edgecliff'>Edgecliff</a> <span>43</span></li><li><a href='/in/moore-park/' data-slug='moore-park'>Moore Park</a> <span>15</span></li><li><a href='/in/rushcutters-bay/' data-slug='rushcutters-bay'>Rushcutters Bay</a> <span>33</span></li><li><a href='/in/surry-hills/' data-slug='surry-hills'>Surry Hills</a> <span>75</span></li><li><a href='/in/woollahra/' data-slug='woollahra'>Woollahra</a> <span>165</span></li></ul>
+    <p class='all-suburbs'><a href='/in/'>All suburbs, ranked</a></p>
+  </aside>
 
 <dialog id='intro'>
     <h1>Jacarandas in Paddington</h1>
@@ -42,10 +53,10 @@
         <button value='locate' class='primary'>Find jacarandas near me</button>
         <button value='browse'>Just browse</button>
     </form>
-    <p class='credit'>An <a href='https://al3x.au' target='_blank'>al3x.au</a> project</p>
+    <p class='credit'><a href='/in/'>Browse by suburb</a> · An <a href='https://al3x.au' target='_blank'>al3x.au</a> project</p>
 </dialog>
 
-<script src='/map.js?v=4'></script>
+<script src='/map.js?v=5'></script>
 
 </body>
 </html>

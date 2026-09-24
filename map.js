@@ -58,13 +58,24 @@ maplibregl.addProtocol('pmtiles', protocol.tile);
 // Suburb pages (/in/<suburb>/) open on the suburb
 const suburbBounds = document.querySelector('meta[name="suburb-bounds"]')?.content.split(',').map(Number);
 
+const wideLayout = window.matchMedia('(min-width: 700px)');
+
+// Keep what the map is framing clear of the suburb panel
+function panelPadding() {
+  const panel = document.getElementById('suburb-panel');
+  if (!panel || panel.hidden) return 20;
+  return wideLayout.matches
+    ? { top: 20, right: 20, bottom: 20, left: panel.offsetWidth + 30 }
+    : { top: 20, right: 20, left: 20, bottom: panel.offsetHeight + 50 };
+}
+
 const map = new maplibregl.Map({
   container: 'map',
   style: basemaps[currentBasemapIndex].style,
   center: [151.2093, -33.88],
   zoom: 11,
   bounds: suburbBounds,
-  fitBoundsOptions: { padding: 20 },
+  fitBoundsOptions: { padding: panelPadding() },
   hash: true,
   attributionControl: {
     customAttribution: [
@@ -237,17 +248,32 @@ function treeUrl(lngLat, suburb) {
   return `${window.location.origin}${path}?tree=${lat},${lng}#${zoom}/${lat}/${lng}`;
 }
 
-function showTreePopup(lngLat, { area_m2: area, suburb } = {}) {
-  const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${lngLat.lat},${lngLat.lng}`;
+// Canopy diameter from its area; must match across() in scripts/build-pages.mjs
+const acrossMetres = (area) => Math.round(2 * Math.sqrt(area / Math.PI));
+
+function showTreePopup(lngLat, { area_m2: area, suburb, rank } = {}) {
+  const { lat, lng } = lngLat;
+  const lines = [];
+  if (suburb) lines.push(`<strong>${suburb}</strong>`);
+  lines.push(area ? `About ${acrossMetres(area)} m across` : 'A jacaranda');
+  if (rank === 1) lines.push('The biggest here');
+  else if (rank) lines.push('One of the 10 biggest here');
+
   const content = document.createElement('div');
   content.className = 'tree-popup';
   content.innerHTML = `
-    <p>${suburb ? `<strong>${suburb}</strong><br>` : ''}${area ? `About ${Math.round(area)} m² of canopy` : 'A jacaranda'}</p>
-    <a href="${googleMapsUrl}" target="_blank" rel="noopener noreferrer">Directions</a>
-    <button type="button">Share</button>
+    <p>${lines.join('<br>')}</p>
+    <div class="actions">
+      <a href="https://www.google.com/maps/search/?api=1&query=${lat},${lng}" target="_blank" rel="noopener noreferrer">Directions</a>
+      <a href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${lat},${lng}" target="_blank" rel="noopener noreferrer">Street View</a>
+      <button type="button" class="share">Share</button>
+    </div>
+    ${suburb ? `<button type="button" class="more">More in ${suburb} →</button>` : ''}
   `;
 
-  const shareButton = content.querySelector('button');
+  content.querySelector('.more')?.addEventListener('click', () => openSuburb(slugify(suburb), false));
+
+  const shareButton = content.querySelector('.share');
   shareButton.addEventListener('click', async () => {
     const url = treeUrl(lngLat, suburb);
     if (navigator.share) {
@@ -266,7 +292,39 @@ function showTreePopup(lngLat, { area_m2: area, suburb } = {}) {
     }
   });
 
-  new maplibregl.Popup().setLngLat(lngLat).setDOMContent(content).addTo(map);
+  new maplibregl.Popup({ maxWidth: '300px' }).setLngLat(lngLat).setDOMContent(content).addTo(map);
+}
+
+let panel = document.getElementById('suburb-panel');
+if (panel) setUpPanel(panel);
+
+function setUpPanel(el) {
+  map.getContainer().appendChild(el);
+  el.querySelector('.panel-close').addEventListener('click', () => { el.hidden = true; });
+
+  el.querySelectorAll('.biggest button').forEach((button, i) => button.addEventListener('click', () => {
+    const lngLat = new maplibregl.LngLat(Number(button.dataset.lng), Number(button.dataset.lat));
+    map.flyTo({ center: lngLat, zoom: 18, padding: panelPadding() });
+    showTreePopup(lngLat, { area_m2: Number(button.dataset.area), suburb: el.dataset.name, rank: i + 1 });
+  }));
+
+  el.querySelectorAll('.nearby a').forEach((link) => link.addEventListener('click', (e) => {
+    e.preventDefault();
+    openSuburb(link.dataset.slug, true);
+  }));
+}
+
+// Panels are only written into suburb pages, so fetch the suburb's page to show one anywhere
+async function openSuburb(slug, fly) {
+  if (panel?.dataset.slug !== slug) {
+    const response = await fetch(`/in/${slug}/`);
+    const page = new DOMParser().parseFromString(await response.text(), 'text/html');
+    panel?.remove();
+    panel = page.getElementById('suburb-panel');
+    setUpPanel(panel);
+  }
+  panel.hidden = false;
+  if (fly) map.fitBounds(panel.dataset.bounds.split(',').map(Number), { padding: panelPadding() });
 }
 
 map.on('load', () => {
