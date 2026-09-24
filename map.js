@@ -29,6 +29,8 @@ const basemaps = [
             'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
           ],
           tileSize: 256,
+          // Esri serves "Map data not yet available" tiles past this in Sydney; overzoom instead
+          maxzoom: 20,
           attribution: '© <a href="https://www.esri.com" target="_blank">Esri</a>'
         }
       },
