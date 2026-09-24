@@ -55,11 +55,16 @@ const openedSharedLink = window.location.hash.length > 1;
 const protocol = new pmtiles.Protocol();
 maplibregl.addProtocol('pmtiles', protocol.tile);
 
+// Suburb pages (/in/<suburb>/) open on the suburb
+const suburbBounds = document.querySelector('meta[name="suburb-bounds"]')?.content.split(',').map(Number);
+
 const map = new maplibregl.Map({
   container: 'map',
   style: basemaps[currentBasemapIndex].style,
   center: [151.2093, -33.88],
   zoom: 11,
+  bounds: suburbBounds,
+  fitBoundsOptions: { padding: 20 },
   hash: true,
   attributionControl: {
     customAttribution: [
@@ -78,12 +83,12 @@ map.addControl(geolocate);
 const overlaySources = {
   jacarandas: {
     type: 'vector',
-    url: 'pmtiles://' + new URL('data/jacarandas.pmtiles', window.location.href),
+    url: `pmtiles://${window.location.origin}/data/jacarandas.pmtiles`,
     attribution: 'Jacarandas detected from aerial imagery'
   },
   coverage: {
     type: 'geojson',
-    data: './data/coverage.geojson'
+    data: '/data/coverage.geojson'
   }
 };
 
@@ -220,28 +225,33 @@ try { introSeen = localStorage.getItem('introSeen') === '1'; } catch (e) {}
 // Skip the intro for shared links, which already point somewhere specific
 if (!introSeen && !openedSharedLink) intro.showModal();
 
-function treeUrl(lngLat) {
+// Must match slug() in scripts/suburbs.py
+const slugify = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+// Trees in a suburb with its own page share that page, so the link preview names the suburb
+function treeUrl(lngLat, suburb) {
   const lat = lngLat.lat.toFixed(6);
   const lng = lngLat.lng.toFixed(6);
   const zoom = Math.round(map.getZoom() * 100) / 100;
-  return `${window.location.origin}${window.location.pathname}?tree=${lat},${lng}#${zoom}/${lat}/${lng}`;
+  const path = suburb ? `/in/${slugify(suburb)}/` : '/';
+  return `${window.location.origin}${path}?tree=${lat},${lng}#${zoom}/${lat}/${lng}`;
 }
 
-function showTreePopup(lngLat, area) {
+function showTreePopup(lngLat, { area_m2: area, suburb } = {}) {
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${lngLat.lat},${lngLat.lng}`;
   const content = document.createElement('div');
   content.className = 'tree-popup';
   content.innerHTML = `
-    ${area ? `<p>About ${Math.round(area)} m² of canopy</p>` : '<p>A jacaranda</p>'}
+    <p>${suburb ? `<strong>${suburb}</strong><br>` : ''}${area ? `About ${Math.round(area)} m² of canopy` : 'A jacaranda'}</p>
     <a href="${googleMapsUrl}" target="_blank" rel="noopener noreferrer">Directions</a>
     <button type="button">Share</button>
   `;
 
   const shareButton = content.querySelector('button');
   shareButton.addEventListener('click', async () => {
-    const url = treeUrl(lngLat);
+    const url = treeUrl(lngLat, suburb);
     if (navigator.share) {
-      try { await navigator.share({ title: 'A jacaranda near you', url }); } catch (e) {}
+      try { await navigator.share({ title: suburb ? `A jacaranda in ${suburb}` : 'A jacaranda', url }); } catch (e) {}
       return;
     }
     try {
@@ -265,8 +275,17 @@ map.on('load', () => {
   const tree = new URLSearchParams(window.location.search).get('tree');
   const [lat, lng] = (tree || '').split(',').map(Number);
   if (Number.isFinite(lat) && Number.isFinite(lng)) {
-    showTreePopup(new maplibregl.LngLat(lng, lat));
+    const lngLat = new maplibregl.LngLat(lng, lat);
     history.replaceState(null, '', window.location.pathname + window.location.hash);
+    // Wait for the tiles so the popup can show the tree's details
+    map.once('idle', () => {
+      const point = map.project(lngLat);
+      const [feature] = map.queryRenderedFeatures(
+        [[point.x - 2, point.y - 2], [point.x + 2, point.y + 2]],
+        { layers: ['jacarandas-point'] }
+      );
+      showTreePopup(lngLat, feature?.properties);
+    });
   }
 });
 
@@ -274,7 +293,7 @@ map.on('load', () => {
 map.on('click', 'jacarandas-point', (e) => {
   const feature = e.features[0];
   const [lng, lat] = feature.geometry.coordinates;
-  showTreePopup(new maplibregl.LngLat(lng, lat), feature.properties.area_m2);
+  showTreePopup(new maplibregl.LngLat(lng, lat), feature.properties);
 });
 
 map.on('mouseenter', 'jacarandas-point', () => {
