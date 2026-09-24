@@ -57,6 +57,17 @@ body { margin:0; padding:0; }
     color: white;
 }
 
+#intro .credit {
+    margin: 14px 0 0;
+    font-size: 13px;
+    color: #666;
+    text-align: center;
+}
+
+#intro .credit a {
+    color: #6a1fb5;
+}
+
 .tree-popup {
     font: 14px system-ui, sans-serif;
 }

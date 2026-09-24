@@ -60,7 +60,13 @@ const map = new maplibregl.Map({
   style: basemaps[currentBasemapIndex].style,
   center: [151.2093, -33.88],
   zoom: 11,
-  hash: true
+  hash: true,
+  attributionControl: {
+    customAttribution: [
+      'An <a href="https://al3x.au" target="_blank">al3x.au</a> project',
+      '<a href="https://maplibre.org/" target="_blank">MapLibre</a>'
+    ]
+  }
 });
 
 const geolocate = new maplibregl.GeolocateControl({
