@@ -21,7 +21,7 @@
     <script src='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js'></script>
     <link href='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/pmtiles@4.5.0/dist/pmtiles.js'></script>
-    <link href='style.css' rel='stylesheet' />
+    <link href='style.css?v=2' rel='stylesheet' />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 100%22><text y=%22.9em%22 font-size=%2290%22>💜</text></svg>">
 </head>
 <body>
@@ -30,12 +30,13 @@
 
 <dialog id='intro'>
     <h1>Jacarandas Near Me</h1>
-    <p>Each purple dot is a jacaranda. More than 21,000 of them were spotted in aerial photos of inner Sydney by a machine-learning model, so expect the odd miss or mix-up.</p>
-    <ul>
-        <li>Zoom in to see individual trees. Bigger dots are bigger trees.</li>
-        <li>Tap a tree for directions or to share it.</li>
-        <li>Only the area inside the dashed line has been mapped so far.</li>
-    </ul>
+    <p class='lede'>Over 21,000 jacarandas across inner Sydney, spotted in aerial photos by a machine&#8209;learning model. Expect the odd miss.</p>
+    <dl class='key'>
+        <dt><svg viewBox='0 0 36 20'><circle cx='6' cy='12' r='4'/><circle cx='24' cy='10' r='8'/></svg></dt>
+        <dd>Bigger dots are bigger trees. Tap one for directions or to share.</dd>
+        <dt><svg viewBox='0 0 36 20'><path d='M2 10h32'/></svg></dt>
+        <dd>The dashed line marks the area mapped so far.</dd>
+    </dl>
     <form method='dialog'>
         <button value='locate' class='primary'>Find jacarandas near me</button>
         <button value='browse'>Just browse</button>
@@ -43,7 +44,7 @@
     <p class='credit'>An <a href='https://al3x.au' target='_blank'>al3x.au</a> project</p>
 </dialog>
 
-<script src='map.js'></script>
+<script src='map.js?v=2'></script>
 
 </body>
 </html>

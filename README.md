@@ -4,3 +4,6 @@ Running on MapLibre with PMTiles.
 
 ## Data
 `data/jacarandas-combined.geojson` is the source. After changing it, run `scripts/build-tiles.sh` (needs tippecanoe and GDAL) to rebuild `data/jacarandas.pmtiles` and `data/coverage.geojson`, and commit all three.
+
+## Releasing
+Cloudflare caches `map.js` and `style.css` for 4 hours. Bump the `?v=` on both in `index.html` whenever either changes.

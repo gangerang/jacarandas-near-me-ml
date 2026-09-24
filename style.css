@@ -11,7 +11,7 @@ body { margin:0; padding:0; }
 }
 
 #intro {
-    max-width: min(26rem, calc(100vw - 32px));
+    max-width: min(28rem, calc(100vw - 32px));
     border: none;
     border-radius: 12px;
     padding: 20px 22px;
@@ -30,15 +30,55 @@ body { margin:0; padding:0; }
     color: #6a1fb5;
 }
 
-#intro ul {
-    padding-left: 20px;
+#intro p {
+    text-wrap: pretty;
+}
+
+#intro .lede {
+    margin: 0 0 16px;
+}
+
+#intro .key {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 10px 12px;
+    align-items: center;
+    margin: 0;
+    font-size: 14px;
+    color: #444;
+    text-wrap: pretty;
+}
+
+#intro .key dt {
+    display: flex;
+}
+
+#intro .key dd {
+    margin: 0;
+}
+
+#intro .key svg {
+    width: 36px;
+    height: 20px;
+}
+
+#intro .key circle {
+    fill: rgba(138, 43, 226, .6);
+    stroke: white;
+    stroke-width: 1;
+}
+
+#intro .key path {
+    stroke: #8A2BE2;
+    stroke-width: 2;
+    stroke-dasharray: 6 4;
 }
 
 #intro form {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-top: 16px;
+    margin-top: 20px;
 }
 
 #intro button {
@@ -50,6 +90,11 @@ body { margin:0; padding:0; }
     color: #6a1fb5;
     font: 600 15px system-ui, sans-serif;
     cursor: pointer;
+}
+
+#intro button:focus-visible {
+    outline: 2px solid #6a1fb5;
+    outline-offset: 2px;
 }
 
 #intro button.primary {
