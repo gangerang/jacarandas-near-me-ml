@@ -12,7 +12,7 @@ if (window.location.hostname.startsWith("dev.")) {
   }
 }
 
-// OpenFreeMap vector styles (https://openfreemap.org); satellite stays on Esri raster tiles
+// OpenFreeMap vector styles (https://openfreemap.org); satellite is the NSW Imagery Basemap
 const basemaps = [
   {
     name: 'Streets',
@@ -23,22 +23,22 @@ const basemaps = [
     style: {
       version: 8,
       sources: {
-        'esri-world-imagery': {
+        'nsw-imagery': {
           type: 'raster',
           tiles: [
-            'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+            'https://portal.spatial.nsw.gov.au/aid/tile/rest/services/NSWWebImagery/MapServer/tile/{z}/{y}/{x}'
           ],
           tileSize: 256,
-          // Esri serves "Map data not yet available" tiles past this in Sydney; overzoom instead
-          maxzoom: 20,
-          attribution: '© <a href="https://www.esri.com" target="_blank">Esri</a>'
+          // Deepest level with imagery; overzoom past it
+          maxzoom: 21,
+          attribution: 'Imagery © <a href="https://www.spatial.nsw.gov.au" target="_blank">Spatial Services NSW</a>, SPOT © Airbus DS'
         }
       },
       layers: [
         {
-          id: 'esri-world-imagery-layer',
+          id: 'nsw-imagery-layer',
           type: 'raster',
-          source: 'esri-world-imagery'
+          source: 'nsw-imagery'
         }
       ]
     }
